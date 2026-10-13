@@ -1,0 +1,104 @@
+{
+  "$comment": "The three restoration missions (spec section 6). Starting values are from the spec unless marked proposed. Objectives are measured on an experiment's final state or on every day (timing 'throughout'). Proposed values are in docs/brain/ECOLOGY_MODEL.md section 6.",
+  "missions": [
+    {
+      "id": "mission-meadow",
+      "title": "Restore the Grazing Meadow",
+      "mapId": "mission-meadow",
+      "durationDays": 30,
+      "minDurationDays": 30,
+      "problem": "The meadow has lost most of its grass. Rabbits and cows compete for too little food, and the animal population cannot last.",
+      "briefing": "Look at the meadow first: the grass is sparse and the ground is bare. Then open the lab. Test rainfall, sunlight, soil quality, and the starting numbers of rabbits and cows. Run at least 30 days and explain what you saw.",
+      "allowedControls": ["rainfallMmPerDay", "sunlightPercent", "soilQuality", "rabbit", "cow", "durationDays"],
+      "start": {
+        "env": {
+          "temperatureC": 24,
+          "rainfallMmPerDay": 30,
+          "sunlightPercent": 70,
+          "soilQuality": 45,
+          "pollution": 20,
+          "waterQuality": 80
+        },
+        "grassPercent": {
+          "grassland": 25,
+          "meadow": 25,
+          "forest": 40,
+          "forest_edge": 60,
+          "pond_shore": 90
+        },
+        "populations": { "rabbit": 24, "cow": 12, "chicken": 0, "mouse": 0, "fox": 4 }
+      },
+      "objectives": [
+        { "id": "grass", "text": "Grass coverage reaches at least 60% by the end", "metric": "grassPercent", "op": ">=", "value": 60, "timing": "atEnd" },
+        { "id": "rabbits-survive", "text": "Rabbits never die out", "metric": "speciesCount", "species": "rabbit", "op": ">=", "value": 1, "timing": "throughout" },
+        { "id": "cows-survive", "text": "Cows never die out", "metric": "speciesCount", "species": "cow", "op": ">=", "value": 1, "timing": "throughout" }
+      ]
+    },
+    {
+      "id": "mission-forest",
+      "title": "Reconnect the Forest",
+      "mapId": "mission-forest",
+      "durationDays": 45,
+      "minDurationDays": 45,
+      "problem": "Clearing has reduced the tree cover and split the habitat that foxes and mice use. Restore enough habitat and check whether the ecosystem can recover.",
+      "briefing": "Walk through the damaged forest and look at what is left. Then open the lab and test soil, sunlight, rainfall, pollution, and the starting populations. Run at least 45 days, compare with the control, and explain one population change.",
+      "allowedControls": ["soilQuality", "sunlightPercent", "rainfallMmPerDay", "pollution", "rabbit", "mouse", "fox", "durationDays"],
+      "start": {
+        "env": {
+          "temperatureC": 24,
+          "rainfallMmPerDay": 45,
+          "sunlightPercent": 70,
+          "soilQuality": 45,
+          "pollution": 20,
+          "waterQuality": 80
+        },
+        "grassPercent": {
+          "grassland": 45,
+          "meadow": 45,
+          "forest": 45,
+          "forest_edge": 45,
+          "pond_shore": 45
+        },
+        "populations": { "rabbit": 12, "cow": 0, "chicken": 0, "mouse": 18, "fox": 6 }
+      },
+      "objectives": [
+        { "id": "trees", "text": "Tree count reaches at least 15 by the end", "metric": "treeCount", "op": ">=", "value": 15, "timing": "atEnd" },
+        { "id": "forest-cover", "text": "Forest cover reaches at least 40% by the end", "metric": "forestCoverPercent", "op": ">=", "value": 40, "timing": "atEnd" },
+        { "id": "species", "text": "At least two animal species are still present at the end", "metric": "speciesPresentCount", "op": ">=", "value": 2, "timing": "atEnd" }
+      ]
+    },
+    {
+      "id": "mission-pond",
+      "title": "Clean the Polluted Pond",
+      "mapId": "mission-pond",
+      "durationDays": 30,
+      "minDurationDays": 30,
+      "problem": "Pollution has damaged the pond and the grass around it. Find the link between pollution and ecological health, then test a recovery.",
+      "briefing": "Walk to the pond and look at the murky water and the thin grass on its shore. Then open the lab. Test pollution, rainfall, soil, sunlight, and the starting populations. Run at least 30 days and explain whether the ecosystem improved.",
+      "allowedControls": ["pollution", "rainfallMmPerDay", "soilQuality", "sunlightPercent", "rabbit", "mouse", "fox", "durationDays"],
+      "start": {
+        "env": {
+          "temperatureC": 24,
+          "rainfallMmPerDay": 45,
+          "sunlightPercent": 70,
+          "soilQuality": 40,
+          "pollution": 75,
+          "waterQuality": 25
+        },
+        "grassPercent": {
+          "grassland": 90,
+          "meadow": 90,
+          "forest": 40,
+          "forest_edge": 80,
+          "pond_shore": 30
+        },
+        "populations": { "rabbit": 8, "cow": 0, "chicken": 0, "mouse": 10, "fox": 3 }
+      },
+      "objectives": [
+        { "id": "pollution", "text": "Pollution falls to 30 or below by the end", "metric": "pollution", "op": "<=", "value": 30, "timing": "atEnd" },
+        { "id": "water", "text": "Water quality reaches at least 65 by the end", "metric": "waterQuality", "op": ">=", "value": 65, "timing": "atEnd" },
+        { "id": "shore-grass", "text": "Grass near the pond reaches at least 50% by the end", "metric": "grassRegionPercent", "region": "pond_shore", "op": ">=", "value": 50, "timing": "atEnd" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "$comment": "Feeding relationships. 'grass' stands for plant biomass. Chicken and mouse 'seeds' are modelled as grass biomass in this version (see docs/brain/ECOLOGY_MODEL.md section 7).",
+  "edges": [
+    { "prey": "grass", "predator": "rabbit", "kind": "grazes" },
+    { "prey": "grass", "predator": "cow", "kind": "grazes" },
+    { "prey": "grass", "predator": "chicken", "kind": "forages" },
+    { "prey": "grass", "predator": "mouse", "kind": "forages" },
+    { "prey": "rabbit", "predator": "fox", "kind": "hunts" },
+    { "prey": "mouse", "predator": "fox", "kind": "hunts" }
+  ]
+}

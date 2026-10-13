@@ -1,0 +1,75 @@
+{
+  "$comment": "Field-guide text for the animal dialog. Facts are general natural-history statements about the real animal, written for this game. Roles and lifespans that depend on the model are derived from species.json and food-web.json at runtime, not written here.",
+  "rabbit": {
+    "latin": "Oryctolagus cuniculus",
+    "habitat": "Open grassland and field edges, close to cover such as hedges, scrub and burrows.",
+    "diet": "Grass, herbs and clover, plus bark and shoots in winter. Rabbits digest tough plant fibre partly by eating their own soft droppings a second time.",
+    "behaviour": "Most active at dusk and dawn. Feeds in the open but runs to cover at the first sign of danger.",
+    "facts": [
+      "Rabbits eat their own soft droppings, called caecotrophs, to take in nutrients they missed the first time round. It is normal behaviour.",
+      "A rabbit's teeth never stop growing, so it has to gnaw constantly to wear them down.",
+      "A rabbit has almost all-round vision, with a small blind spot directly in front of its nose.",
+      "A rabbit warns others of danger by thumping a hind foot on the ground.",
+      "Rabbits are most active at dusk and dawn. The name for this kind of timing is crepuscular.",
+      "Wild rabbits often live in burrow systems called warrens, which can be used by many generations.",
+      "Rabbits breed fast. Gestation is about a month, and a doe can have several litters in a season."
+    ]
+  },
+  "cow": {
+    "latin": "Bos taurus",
+    "habitat": "Pasture and meadows with a reliable water supply. Herds graze together and rest in the same places.",
+    "diet": "Grass and other plants. Cows have a four-chambered stomach, and microbes in the first chamber, the rumen, break down the cellulose in plant fibre.",
+    "behaviour": "Social animals with stable herd bonds. Grazes for several hours a day and chews the cud while resting.",
+    "facts": [
+      "Cows chew the cud: they bring food back up from the first stomach chamber and chew it again.",
+      "The rumen holds many litres of food and is full of microbes. The cow cannot digest cellulose without them.",
+      "A cow's pregnancy lasts about nine months. A newborn calf usually stands within about an hour.",
+      "Cows form close friendships within a herd, and they can become stressed when separated from companions.",
+      "A dairy cow can drink more than 100 litres of water a day in hot weather.",
+      "Grazing removes grass faster than it can regrow when too many animals share one patch. That leaves bare ground."
+    ]
+  },
+  "chicken": {
+    "latin": "Gallus gallus domesticus",
+    "habitat": "Farmyards, hedgerows and open ground with cover for roosting at night.",
+    "diet": "Seeds, grain, green shoots, insects and worms. Chickens are omnivores.",
+    "behaviour": "Scratches the ground with its feet to uncover seeds and insects. Roosts on perches at night.",
+    "facts": [
+      "Domestic chickens are descended from the red junglefowl of Southeast Asia.",
+      "Chickens can see ultraviolet light, which helps them pick out seeds and feathers.",
+      "Chickens roost high at night, which keeps them out of reach of foxes and other ground hunters.",
+      "Chickens can fly short distances to escape or reach a roost, but they cannot sustain long flights.",
+      "Modern laying hens can produce roughly 250 to 300 eggs a year.",
+      "A chicken scratches the ground to uncover food. This also loosens the soil."
+    ]
+  },
+  "mouse": {
+    "latin": "Mus musculus",
+    "habitat": "Hedges, field edges, woodland floors and buildings. Stays in dense cover where it can hide.",
+    "diet": "Seeds, grain, fruit and insects. Mice are omnivores, but seeds make up most of their food in the wild.",
+    "behaviour": "Forages mostly at night, follows the same runs through cover, and freezes or bolts when threatened.",
+    "facts": [
+      "A house mouse can squeeze through a gap about 6 mm wide, roughly the thickness of a pencil.",
+      "Mice breed very quickly. A female can have a new litter every few weeks in good conditions.",
+      "Mice find their way with whiskers and smell, and they keep to familiar runs.",
+      "A mouse's pregnancy lasts about three weeks.",
+      "Mice rely on cover such as long grass and hedges. Open ground exposes them to hunters.",
+      "A mouse can get most of the water it needs from the seeds it eats."
+    ]
+  },
+  "fox": {
+    "latin": "Vulpes vulpes",
+    "habitat": "Woodland edges, hedgerows, farmland and towns. Needs cover and somewhere to den.",
+    "diet": "Mainly small mammals such as mice and rabbits, plus birds, insects, fruit and carrion. Foxes take whatever food is easiest to find.",
+    "behaviour": "Usually hunts alone, mostly at dusk and at night. Rests and raises young in dens called earths.",
+    "facts": [
+      "A fox hunting small rodents often listens for them, then pounces and lands on the prey hidden under grass or snow.",
+      "A red fox can run at speeds up to about 48 km/h over short distances.",
+      "Foxes communicate with a wide range of sounds, including barks and screams.",
+      "A fox often buries spare food and returns to it later.",
+      "Cubs are born in spring, usually in litters of four to six.",
+      "Foxes defend a home range with borders they mark. Neighbouring foxes usually keep to their own ground.",
+      "A fox needs enough prey to live on. In this model a population of foxes falls quickly when rabbits and mice decline."
+    ]
+  }
+}

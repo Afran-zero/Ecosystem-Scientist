@@ -1,0 +1,9 @@
+{
+  "$comment": "Hub baseline. Temperature, rainfall, sunlight, pollution: spec lab mock values. Soil and water quality: assumptions (plan Q3).",
+  "temperatureC": 24,
+  "rainfallMmPerDay": 45,
+  "sunlightPercent": 70,
+  "soilQuality": 70,
+  "pollution": 20,
+  "waterQuality": 80
+}

@@ -1,0 +1,13 @@
+Animated Sideview Sprite Pack - Normal Animals (demo file)
+Author: VectoRaith (vectoraith.itch.io)
+Source page: https://vectoraith.itch.io/animated-sideview-sprite-pack-normal-animals
+Captured: 2026-10-12. Terms below are as summarized from the page on that date; re-check the page before relying on them.
+
+Status in this project: REFERENCE ONLY. Not used in the game build.
+Reason: the pack is side-view only ("NO upward and downward view"), while the spec requires top-down pixel art.
+
+Stated permitted use: free and commercial projects; modification allowed.
+Stated prohibited use: claiming ownership of the assets; redistributing, reselling or sub-licensing the asset files or derivatives as-is; NFT use; AI learning.
+
+Demo contents: vectoraith_sprites_vpets_duck.png and vectoraith_sprites_vpets_rat.png (192 x 16 px each, 12 frames of 16 x 16).
+The full pack (vectoraith_sprites_vpets_animals.zip, paid, minimum $1.20) was NOT downloaded.

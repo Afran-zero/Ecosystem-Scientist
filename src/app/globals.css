@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/*
+ * Visual language: a field journal. Deep night-blue ground, parchment-amber headings, moss-green
+ * for actions. Colours are tokens so the look can change in one place.
+ */
+:root {
+  color-scheme: dark;
+  --eco-ground: #0b1622;
+  --eco-ground-2: #13293d;
+  --eco-panel: rgba(12, 24, 37, 0.94);
+  --eco-line: rgba(255, 255, 255, 0.1);
+  --eco-amber: #fde68a;
+  --eco-moss: #22c55e;
+  --eco-moss-deep: #15803d;
+  --eco-text: #e2e8f0;
+  --eco-muted: #94a3b8;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  color: var(--eco-text);
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(34, 197, 94, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, rgba(56, 189, 248, 0.10), transparent 60%),
+    linear-gradient(180deg, var(--eco-ground-2), var(--eco-ground) 70%);
+  background-attachment: fixed;
+  min-height: 100%;
+}
+
+.font-display {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.01em;
+}
+
+.eco-panel {
+  background: var(--eco-panel);
+  border: 1px solid var(--eco-line);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.eco-heading {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.95rem;
+  color: var(--eco-amber);
+}
+
+.eco-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--eco-line);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  color: var(--eco-text);
+}
+
+.eco-chip-good {
+  border-color: rgba(74, 222, 128, 0.5);
+  background: rgba(34, 197, 94, 0.12);
+  color: #bbf7d0;
+}
+
+.eco-btn,
+.eco-btn-primary,
+.eco-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 9px;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--eco-text);
+}
+
+.eco-btn:hover,
+.eco-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.eco-btn:active,
+.eco-btn-primary:active {
+  transform: translateY(1px);
+}
+
+.eco-btn-primary {
+  border-color: rgba(134, 239, 172, 0.5);
+  background: linear-gradient(180deg, #22c55e, var(--eco-moss-deep));
+  color: #f0fdf4;
+  box-shadow: 0 6px 20px -8px rgba(34, 197, 94, 0.6);
+}
+
+.eco-btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.eco-btn-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--eco-muted);
+  padding: 0.3rem 0.5rem;
+}
+
+.eco-link {
+  color: var(--eco-amber);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.eco-btn:focus-visible,
+.eco-btn-primary:focus-visible,
+.eco-btn-ghost:focus-visible,
+.eco-link:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--eco-amber);
+  outline-offset: 2px;
+}
+
+/* Gentle entrance for panels and the menu. Respects reduced motion. */
+@keyframes eco-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.eco-rise {
+  animation: eco-rise 0.5s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eco-rise {
+    animation: none;
+  }
+}

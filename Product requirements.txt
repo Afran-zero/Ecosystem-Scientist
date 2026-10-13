@@ -1,0 +1,709 @@
+Product requirements: Ecosystem Scientist
+The product should be a playable, browser-based, pixel-art ecosystem game with one explorable island, one functional research laboratory, and exactly three restoration missions.
+The open world is where the player observes and interacts with animals. The laboratory is a conventional data interface: clickable controls, sliders, numeric inputs, charts, diagrams, population bars, and experiment results. It does not need decorative laboratory illustrations.
+The three missions use separate island states to represent different environmental problems. They share the same simulation engine, but each starts from a distinct damaged ecosystem and has its own objectives and restoration criteria.
+1. Product scope and acceptance criteria
+Product type
+2D browser game
+Visual style
+Top-down pixel art
+Worlds
+1 hub + 3 mission states
+Main systems
+Explore, simulate, experiment
+Persistence
+Save progress locally
+Backend requirement
+None for MVP
+The product is complete when a player can enter the game, explore the map, inspect living organisms, open the lab, change simulation variables, observe consequences, complete all three missions, and retain mission progress after reloading the browser.
+The following specification defines the implementation target rather than a list of optional future features.
+2. Core application structure
+Use four primary screens, with the world remaining the central experience.
+Main menu
+Continue · New game · Missions
+Island exploration
+Player movement · Animals · Interaction · Buildings
+Research lab
+Controls · Charts · Experiments
+Field journal
+Species · Observations · Food web
+Mission results
+Evidence · Success criteria · Restoration summary
+Screen behavior
+Main menu: Continue restores the saved state; New Game initializes a fresh save; Missions opens the mission selection screen.
+Island: the player moves freely within map boundaries, collides with terrain and objects, and interacts with nearby organisms and buildings.
+Research lab: opens as a dedicated screen or large overlay. The world simulation pauses while experiments are configured and analyzed.
+Field journal: displays discovered species, observations, habitat information, and trophic relationships.
+Mission results: shows whether objectives were satisfied, the measurements supporting that outcome, and a short scientific explanation.
+Every screen must have a clear way back to the island. The player should not need to refresh the page or lose the current simulation to navigate between screens.
+3. Open-world map requirements
+The world must be a genuinely explorable, scrollable map—not a single screen with a small island image behind the player.
+3.1 Map dimensions and camera
+Use the Tiny Islands 16×16 tileset as the starting visual asset, not as the final map boundary. Its CC0 license permits commercial use without mandatory attribution.
+The first playable map should use these dimensions:
+Property
+Requirement
+Tile dimensions
+16 × 16 source pixels
+Initial map size
+160 × 120 tiles
+World dimensions
+2,560 × 1,920 world pixels
+Initial camera viewport
+Approximately 960 × 640 world pixels
+Rendering scale
+Integer scaling where practical
+Camera
+Follows the player and stops at map boundaries
+Map boundary
+Water surrounding the island
+Collision
+Shoreline, rocks, buildings, and blocked terrain
+Navigation
+Keyboard on desktop; touch controls on mobile
+
+These are implementation targets, not limitations imposed by the tileset. The actual map can be expanded by adding more tiles and terrain. A 160 × 120 tile map provides enough space for multiple habitats while keeping the initial scope finite and testable.
+Implement the map using a tilemap, with separate layers for ground, vegetation, solid objects, decorative details, and interactive objects. The free Tiled map editor⁠ supports tile layers, object layers, collision metadata, and map editing, making it suitable for authoring the island.
+3.2 Required island regions
+The hub island must contain:
+Grassland: open space for rabbits, cows, and grazing behavior.
+Forest: trees, shade, shelter, and fox habitat.
+Pond: water access and the location for the pollution mission.
+Meadow: the primary grass-regrowth and grazing area.
+Forest edge: a transition zone where predators can encounter prey.
+Research station: the entrance to the laboratory and mission selection interface.
+Coastline: a natural boundary around the map.
+The regions must be distinguishable through terrain tiles and vegetation, not merely by labels on the map.
+3.3 Map interaction requirements
+The player must be able to:
+Move in four directions with WASD or arrow keys.
+Move diagonally if the movement implementation supports it, without gaining extra speed.
+Walk behind and in front of trees and buildings using correct sprite depth ordering.
+Approach an animal and interact using E or a contextual interaction button.
+Approach the research station and enter the lab.
+Walk to a mission access point and open the mission briefing.
+See a contextual prompt when an interactable object is within range.
+Stop at map boundaries and avoid walking through solid objects.
+Move the camera smoothly without the map shaking or blurring unnecessarily.
+Pause world simulation while menus, the lab, and mission result screens are active.
+The map must be rendered from individual tiles and sprites. Do not use one large generated image as the entire background, because it prevents reliable collision, interaction, terrain changes, and animal movement.
+3.4 Mission maps
+All missions should reuse the same tile assets, terrain definitions, collision rules, and animal systems.
+Each mission loads its own map configuration and environmental state. The player should visibly see the damage before starting an experiment.
+World state
+Required visual condition
+Hub island
+Healthy grassland, established forest, clean pond
+Mission 1
+Sparse grass, bare ground, visible grazing damage
+Mission 2
+Reduced forest cover, stumps, fragmented vegetation
+Mission 3
+Discolored pond area, damaged banks, litter or pollution markers
+
+Mission maps may share a common base map, but their environmental states must be independently stored. Completing a mission should not accidentally overwrite the starting conditions of another mission.
+4. Laboratory interface specification
+The lab is a functional scientific dashboard, not a second game world.
+Use ordinary interface components: tabs, sliders, numeric inputs, dropdowns, toggles, charts, diagrams, data tables, progress bars, and action buttons. The visual style should be clean, compact, and readable.
+4.1 Lab layout
+Research Laboratory
+UI specification
+Illustrative layout — actual values come from the simulation.
+SIMULATION DAY
+Day 12
+Current world state
+ECOSYSTEM HEALTH
+64 / 100
+Environmental controls
+Rainfall
+45 mm/day
+Slider + numeric input
+Sunlight
+70%
+Slider + numeric input
+Temperature
+24 °C
+Slider + numeric input
+Pollution
+20 / 100
+Slider + numeric input
+Population trends
+The values above are illustrative mock data, not actual simulation results.
+The interface must have these tabs:
+Overview: ecosystem health, simulation day, population totals, and active mission.
+Environment: rainfall, temperature, sunlight, soil quality, water quality, and pollution.
+Populations: species counts, initial population settings, and reproduction controls.
+Food web: organisms and their feeding relationships.
+Experiments: control run, experimental run, and comparison.
+Results: charts, statistics, mission criteria, and a report of the changes observed.
+4.2 Control requirements
+Every control must affect the simulation or be explicitly identified as an informational display. No decorative or nonfunctional sliders.
+Control
+Range / behavior
+Effect
+Temperature
+0–40 °C
+Modifies plant growth and animal survival or reproduction
+Rainfall
+0–100 mm/day
+Influences soil moisture, vegetation, and pond levels
+Sunlight
+0–100%
+Influences plant growth
+Soil quality
+0–100
+Influences vegetation growth
+Pollution
+0–100
+Influences plant and animal health and water quality
+Grass population
+0–100% coverage target
+Sets initial grass coverage for a new run
+Rabbit population
+0–100 individuals
+Sets the initial population for a new run
+Cow population
+0–50 individuals
+Sets the initial population for a new run
+Chicken population
+0–100 individuals
+Sets the initial population for a new run
+Fox population
+0–30 individuals
+Sets the initial population for a new run
+Simulation duration
+1–90 days
+Determines the duration of an experiment
+Time speed
+Pause, 1×, 5×, 10×
+Controls live simulation advancement
+
+The population limits above are configurable software limits, not biological recommendations. Species counts must be capped to avoid uncontrolled population growth.
+Important separation: initial population controls change the starting conditions of a new experimental run. They must not silently add or remove animals from the live world every time a slider moves. A separate, clearly labeled intervention action can modify the current ecosystem when a mission permits it.
+For every numeric input:
+Display the current value and unit.
+Enforce the allowed range.
+Keep the slider and numeric input synchronized.
+Provide a reset-to-default action.
+Reject invalid input without corrupting the simulation.
+Show a confirmation or warning before an intervention that changes the live ecosystem.
+4.3 Charts and diagrams
+The following displays are required:
+Display
+Data
+Population chart
+Species count against simulation day
+Vegetation chart
+Grass coverage and tree count against time
+Birth/death chart
+Daily births and deaths by species
+Food-web diagram
+Producer, herbivore, omnivore, and carnivore relationships
+Environmental chart
+Temperature, rainfall, pollution, and water quality over time
+Comparison chart
+Baseline run against experimental run
+Species table
+Current count, births, deaths, and growth rate
+
+Charts must update from actual simulation records. They must not use hard-coded sample data after the prototype stage.
+The food-web diagram should use nodes and directional arrows. An arrow from grass to rabbit means the rabbit consumes grass; an arrow from rabbit to fox means the fox can consume the rabbit. Selecting a node should highlight its immediate feeding relationships.
+4.4 Experiment workflow
+Every experiment must follow the same interaction flow:
+Choose the current mission or island state.
+Save a baseline snapshot.
+Select experimental variables.
+Configure the starting populations, environmental conditions, and duration.
+Validate the settings.
+Run the experiment.
+Display the results and graphs.
+Compare against the baseline.
+Save the experiment record.
+Submit the evidence to the active mission.
+The player must be able to reset the experiment without erasing unrelated mission progress. Each experiment record should store its starting state, settings, random seed, duration, and resulting measurements.
+5. Ecosystem simulation requirements
+The simulation must be implemented as a separate system from the graphics. The animals shown on the island are visual representations of entities managed by the simulation engine.
+This separation allows the lab to run experiments without relying on player movement or rendering speed.
+5.1 Organisms included in the MVP
+Use these seven organisms and no additional species in the first release.
+Organism
+Classification
+Food / resource
+Primary behavior
+Grass
+Producer
+Sunlight, water, soil nutrients
+Grows and regrows
+Trees
+Producer
+Sunlight, water, soil nutrients
+Grow slowly; provide habitat
+Rabbit
+Herbivore
+Grass
+Grazes, reproduces, flees foxes
+Cow
+Herbivore
+Grass
+Grazes, moves between grass patches
+Chicken
+Omnivore
+Seeds and small food resources
+Forages and reproduces
+Mouse
+Omnivore
+Seeds and vegetation-derived resources
+Forages, hides, reproduces quickly
+Fox
+Carnivore
+Rabbits and mice
+Hunts, eats, reproduces
+
+Chickens and mice are omnivores, even though the initial educational focus is on herbivores and carnivores. The classification must be accurate in the journal and food-web diagram.
+5.2 Required state for each animal
+Every animal entity must maintain:
+Unique ID.
+Species type.
+World position and movement direction.
+Current behavior state.
+Age and life stage.
+Health and energy.
+Hunger level.
+Reproduction cooldown.
+Habitat preference.
+Current target, if hunting or searching for food.
+Birth and death status.
+Animals should have independent positions and behaviors. Do not represent an entire population with one animated sprite.
+5.3 Animal behavior state machine
+Each animal uses a finite-state machine. The state transitions must be deterministic for a given simulation state and random seed.
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> SearchFood: Hunger rises
+    Idle --> Wander: No urgent need
+    Wander --> SearchFood: Hunger rises
+    SearchFood --> Eat: Food found
+    SearchFood --> Wander: No food nearby
+    Eat --> Rest: Energy restored
+    Rest --> Wander: Rest complete
+    Wander --> Flee: Predator detected
+    SearchFood --> Flee: Predator detected
+    Flee --> SearchFood: Threat leaves
+    Eat --> Reproduce: Eligible and healthy
+    Reproduce --> Wander: Reproduction complete
+    Idle --> Dead: Death condition
+    SearchFood --> Dead: Starvation
+    Rest --> Dead: Death condition
+The state machine must be species-aware:
+Rabbits prioritize grass, nearby shelter, and escape from foxes.
+Cows prioritize accessible grass and water.
+Chickens and mice forage for their configured resources.
+Foxes select reachable prey, chase it, and attempt a hunt.
+Grass grows according to environmental conditions and available space.
+Trees grow more slowly and are not consumed by grazing animals in the MVP.
+Animals must not teleport to food or predators. Movement should use speed, distance, detection radius, and collision rules.
+5.4 Simulation time
+Use a fixed ecological time step of one in-game hour, with 24 steps per in-game day.
+Within each step, process:
+Environmental changes.
+Plant growth and resource availability.
+Animal energy and health.
+Movement and target selection.
+Feeding and hunting.
+Births and deaths.
+Population and habitat statistics.
+Mission objective updates.
+The rendering frame rate must not determine ecological outcomes. A slower computer should render fewer frames, not produce a different population trajectory.
+The live island can advance in real time, but the laboratory should be able to fast-forward simulation time without rendering every intermediate frame.
+5.5 Reproduction and population limits
+Each species must have configurable parameters for:
+Minimum reproductive age.
+Reproduction probability.
+Reproduction cooldown.
+Minimum health and energy.
+Gestation or incubation delay, if modeled.
+Maximum population.
+Mortality rate.
+Maximum age or age-dependent mortality.
+A birth should only occur when the configured conditions are met. Animals must not reproduce on every simulation step.
+The MVP may model births as the appearance of a new individual after a reproduction event. It does not need detailed genetics or realistic gestation animations.
+5.6 Vegetation model
+Grass coverage must be represented as a value between 0 and 100 for each grassland region, with spatial patches controlling where grazing is possible.
+The grass-growth function must depend on sunlight, water availability, soil quality, and pollution. Grazing removes available biomass, while regrowth restores it over time.
+Trees should have their own count and growth state. Tree loss reduces forest cover and habitat availability.
+The model must enforce resource limits: grass cannot grow above its maximum coverage, and grazing cannot consume more biomass than is available.
+5.7 Food-web rules
+Define the food-web relationships centrally in configuration, rather than hard-coding them separately into the animals, charts, and mission logic.
+Example relationships:
+Grass → rabbit
+Grass → cow
+Seeds → chicken
+Seeds → mouse
+Rabbit → fox
+Mouse → fox
+A feeding event must update the prey’s state, the predator’s energy, and the relevant statistics. A predator must not consume the same prey twice.
+The simulation should support competition for food, prey scarcity, and declining populations. However, it does not need to reproduce every detail of a real biological ecosystem. The MVP is an educational model, so its assumptions should be documented and exposed to the player when relevant.
+5.8 Reproducibility and validation
+Every experiment must use a known initial state and a recorded random seed. Repeating the same experiment with the same configuration must reproduce the same result.
+Required checks:
+No negative population counts.
+No negative health, energy, or grass biomass.
+No duplicate animal IDs.
+No births above the species population limit.
+No consumption of unavailable resources.
+No animals moving outside the island or through blocked terrain.
+No NaN or infinite numerical values.
+All chart data must agree with the underlying simulation state.
+6. The three restoration missions
+The product must contain exactly three missions. Each mission has a distinct damaged map, a fixed starting state, a briefing, an experimental task, measurable success criteria, and a completion report.
+The missions must be completable in any order, provided their selection requirements are satisfied. The hub island remains available throughout.
+Mission 1 — Restore the Grazing Meadow
+Problem: The meadow has suffered severe vegetation loss. Rabbits and cows are competing for insufficient grass, and the animal population is becoming unsustainable.
+Starting condition
+Grass coverage: 25%.
+Rabbit population: 24.
+Cow population: 12.
+Fox population: 4.
+Trees: 18.
+Rainfall: reduced from the hub baseline.
+Soil quality: moderately degraded.
+These are initial game parameters, not real-world ecological estimates. They must be configurable in the mission data.
+Player objectives
+Inspect the meadow and identify the low grass coverage.
+Open the lab and review the population and vegetation charts.
+Test at least one restoration intervention.
+Run the ecosystem for a minimum of 30 simulated days.
+Submit an experiment and explain the observed results.
+Available experimental controls
+Rainfall, sunlight, soil quality, initial herbivore populations, and experiment duration.
+Completion criteria
+Grass coverage reaches at least 60%.
+Neither rabbits nor cows becomes extinct.
+The ecosystem completes the required observation period.
+The player submits a valid experiment record and evidence.
+The player should not be forced to manipulate only one variable. Multiple strategies can pass if they satisfy the objective and the experiment record supports the result.
+Educational assessment: carrying capacity, competition, plant growth, resource limitation, and population dynamics.
+Mission 2 — Reconnect the Forest
+Problem: Forest clearing has reduced tree cover and fragmented the habitat used by foxes and mice. The player must restore sufficient habitat and determine whether the ecosystem can recover.
+Starting condition
+Tree count: 8.
+Forest cover: 20%.
+Mouse population: 18.
+Rabbit population: 12.
+Fox population: 6.
+Soil quality: moderately degraded.
+Grass coverage: 45%.
+Player objectives
+Explore the damaged forest and inspect the remaining vegetation.
+Examine the food web and available population data.
+Test an intervention involving vegetation recovery or habitat conditions.
+Run the simulation for at least 45 simulated days.
+Submit a report comparing the baseline and experimental runs.
+Available experimental controls
+Soil quality, sunlight, rainfall, pollution, initial populations, and simulation duration.
+Completion criteria
+Tree count reaches at least 15.
+Forest cover reaches at least 40%.
+At least two animal species remain present at the end of the experiment.
+The player submits evidence and explains at least one observed population change.
+Forest cover and tree count must be linked to the same underlying map and vegetation model. The displayed values must not be independently adjusted to make the mission pass.
+Educational assessment: habitat loss, habitat recovery, food-web relationships, and the dependence of animal populations on environmental conditions.
+Mission 3 — Clean the Polluted Pond
+Problem: Pollution has damaged the pond and its surrounding vegetation. The player must identify the relationship between pollution and ecological health, then test a recovery strategy.
+Starting condition
+Pollution: 75/100.
+Water quality: 25/100.
+Grass coverage near the pond: 30%.
+Tree count: 12.
+Mouse population: 10.
+Rabbit population: 8.
+Fox population: 3.
+Soil quality near the pond: degraded.
+Player objectives
+Explore the pond and inspect its environmental condition.
+Review pollution, water quality, vegetation, and population data.
+Test pollution reduction or another permitted restoration intervention.
+Run the experiment for at least 30 simulated days.
+Submit evidence explaining whether the ecosystem improved.
+Available experimental controls
+Pollution, rainfall, soil quality, sunlight, initial populations, and simulation duration.
+Completion criteria
+Pollution falls to 30/100 or below.
+Water quality reaches at least 65/100.
+Grass coverage near the pond reaches at least 50%.
+The player submits a valid experiment and evidence.
+Pollution and water quality must be linked through the simulation rules. Reducing pollution should not instantly restore every organism; vegetation and populations should respond according to their own recovery dynamics.
+Educational assessment: environmental pollution, ecosystem stress, causal reasoning, and restoration.
+Shared mission rules
+All missions must implement the same interaction contract:
+The mission briefing states the problem, available variables, and success criteria.
+A mission has a dedicated starting state and a reset action.
+The player can inspect the map before opening the lab.
+Experiments are stored separately from the mission’s original conditions.
+Objectives update from simulation events and measured statistics.
+Completion is calculated from explicit criteria, not from a hard-coded success button.
+The results screen reports the initial state, intervention, duration, final state, and criteria satisfied.
+Mission completion persists after refresh.
+Replaying a mission starts from its defined initial state, not from a previously restored state.
+The three missions should use shared code and configuration-driven data. Do not build three separate versions of the simulation.
+7. Technical implementation requirements
+For a browser-first game, use a React-based application for menus and lab interfaces, with Phaser handling the actual game world. Phaser supports keyboard and pointer input, sprites, cameras, and lightweight physics suitable for top-down games.
+Recommended stack
+Component
+Technology
+Responsibility
+Application
+Next.js + TypeScript
+Routing, menus, journal, lab UI
+Game engine
+Phaser
+World rendering, camera, movement, collisions
+Map authoring
+Tiled
+Island terrain, layers, object positions
+Charts
+Recharts
+Population trends and experimental comparisons
+UI styling
+Tailwind CSS
+Controls, tabs, panels, dialogs
+Simulation
+TypeScript modules
+Ecology, time, animals, vegetation
+Persistence
+localStorage
+Save data and mission progress
+Deployment
+Vercel
+Host the browser game
+
+Use the official Phaser documentation⁠ and Tiled documentation⁠ during implementation.
+A backend, database, login system, multiplayer infrastructure, and external AI API are not required for the MVP.
+7.1 Architecture boundaries
+flowchart TD
+    UI[Next.js UI]
+    GAME[Phaser World]
+    SIM[Ecology Simulation]
+    MISSION[Mission Engine]
+    DATA[Game Configuration]
+    SAVE[Local Save Service]
+    CHARTS[Charts and Results]
+
+    UI --> GAME
+    UI --> SIM
+    UI --> MISSION
+    GAME --> SIM
+    SIM --> DATA
+    MISSION --> SIM
+    MISSION --> DATA
+    SIM --> CHARTS
+    MISSION --> SAVE
+    SIM --> SAVE
+    UI --> SAVE
+The boundaries are mandatory:
+Phaser renders and handles movement; it must not own the authoritative population calculations.
+The simulation engine owns animal states, vegetation, environmental conditions, and population statistics.
+The mission engine evaluates objectives using simulation measurements.
+The UI reads simulation state and dispatches validated actions.
+The save service serializes the game state and mission progress.
+Configuration files define species, feeding relationships, environmental parameters, and mission scenarios.
+All UI components must display values derived from the simulation. Avoid duplicate state in React components that can drift out of sync with the game.
+7.2 Project structure
+Use the following as the target directory layout.
+ecosystem-scientist/
+├── public/
+│   ├── assets/
+│   │   ├── tilesets/
+│   │   ├── animals/
+│   │   ├── player/
+│   │   ├── vegetation/
+│   │   └── buildings/
+│   ├── maps/
+│   │   ├── hub.json
+│   │   ├── mission-meadow.json
+│   │   ├── mission-forest.json
+│   │   └── mission-pond.json
+│   └── data/
+│       ├── species.json
+│       ├── food-web.json
+│       └── missions.json
+├── src/
+│   ├── app/
+│   │   ├── page.tsx
+│   │   ├── game/
+│   │   └── layout.tsx
+│   ├── components/
+│   │   ├── game/
+│   │   ├── laboratory/
+│   │   ├── journal/
+│   │   └── missions/
+│   ├── game/
+│   │   ├── scenes/
+│   │   ├── entities/
+│   │   ├── maps/
+│   │   └── input/
+│   ├── simulation/
+│   │   ├── engine.ts
+│   │   ├── clock.ts
+│   │   ├── animals.ts
+│   │   ├── plants.ts
+│   │   ├── environment.ts
+│   │   ├── food-web.ts
+│   │   ├── reproduction.ts
+│   │   ├── statistics.ts
+│   │   └── experiments.ts
+│   ├── missions/
+│   │   ├── engine.ts
+│   │   ├── objectives.ts
+│   │   └── evaluation.ts
+│   ├── persistence/
+│   │   ├── save.ts
+│   │   └── migrations.ts
+│   └── types/
+│       └── index.ts
+├── tests/
+│   ├── simulation/
+│   ├── missions/
+│   └── persistence/
+├── package.json
+└── README.md
+The map files shown here are intended to be exported into a format the selected Phaser map loader can consume. The source maps and original asset licenses must also be retained in the project.
+8. Data contracts and simulation configuration
+The core systems must share a defined data model.
+Animal entity
+interface Animal {
+  id: string;
+  speciesId: string;
+  x: number;
+  y: number;
+  ageHours: number;
+  health: number;
+  energy: number;
+  hunger: number;
+  state: AnimalState;
+  targetId?: string;
+  reproductionCooldownHours: number;
+  alive: boolean;
+}
+AnimalState should be a union of supported behavior states, such as idle, wander, searchFood, eat, hunt, flee, rest, and dead.
+Environment state
+interface EnvironmentState {
+  temperatureC: number;
+  rainfallMmPerDay: number;
+  sunlightPercent: number;
+  soilQuality: number;
+  pollution: number;
+  waterQuality: number;
+  simulationHour: number;
+}
+Define units and valid ranges centrally. UI values and simulation values must use the same units.
+Mission definition
+interface MissionDefinition {
+  id: string;
+  title: string;
+  mapId: string;
+  initialStateId: string;
+  durationDays: number;
+  objectives: MissionObjective[];
+  allowedControls: string[];
+}
+Each objective should specify a measurable condition and whether it must hold at the end of the run or throughout the run. This prevents ambiguity when evaluating mission success.
+Experiment record
+interface ExperimentRecord {
+  id: string;
+  missionId: string;
+  seed: number;
+  durationDays: number;
+  startingState: SimulationSnapshot;
+  interventions: ExperimentIntervention[];
+  finalState: SimulationSnapshot;
+  statistics: SimulationStatistics;
+  createdAt: string;
+}
+Snapshots must contain all state necessary to reproduce the run, including animal states, vegetation, environment, simulation time, and random-generator state. A seed alone is insufficient if the experiment starts from a previously evolved ecosystem.
+9. Save and recovery requirements
+The MVP should save locally in the browser.
+Persist:
+Selected mission and current map.
+Player position.
+Current live simulation state.
+Discovered species and journal entries.
+Mission completion status.
+Completed experiment records.
+User interface preferences where appropriate.
+Save schema version.
+The save service must validate stored data before loading it. If a save is corrupted or has an unsupported version, the game must present a recovery option instead of crashing.
+Save at meaningful checkpoints: after mission completion, after submitting an experiment, after changing the live world, and periodically during play. Avoid writing the entire save on every rendered frame.
+A New Game action must explicitly confirm that existing progress will be replaced.
+10. Definition of done: functional acceptance tests
+The game is not complete simply because the map renders and the lab looks correct. Every test below must pass.
+Acceptance checklist
+1/22 verified
+World and interaction
+Player moves and collides correctly.
+Camera follows the player across the expanded map.
+Animals move and react to food and predators.
+Nearby interactions open the correct dialogue or interface.
+The lab and journal can be opened and closed without losing state.
+Simulation and laboratory
+Every active control changes a defined simulation parameter.
+Sliders and numeric inputs remain synchronized and validated.
+Animals reproduce and die according to their configured rules.
+Grass regrows and is reduced by grazing.
+Charts reflect actual simulation records.
+Repeated experiments with the same snapshot and seed reproduce the same result.
+Missions
+Exactly three restoration missions are available.
+Each mission loads its own damaged map and initial state.
+Each mission can be reset independently.
+Objectives update from real simulation data.
+Valid experiments can be submitted and evaluated.
+Mission completion and reports persist after reload.
+Reliability
+No invalid population counts or non-finite simulation values occur.
+A corrupted save does not crash the application.
+A full simulation reset restores the expected baseline.
+The game remains usable at the target viewport size.
+No visible UI control is inert or misleading.
+These checkboxes are a project tracking aid. Mark an item only after the implementation has been tested; they do not execute automated tests.
+11. Implementation order and delivery milestones
+The build must proceed in dependency order. The ecosystem simulation should be validated before all three missions are populated with content.
+Milestone 1 — Playable world
+ Deliver the expanded island, player movement, camera, collisions, map transitions, and asset loading. The map must be scrollable and interactive.
+Milestone 2 — Living ecosystem
+ Deliver the seven species, food web, movement, feeding, hunting, reproduction, mortality, vegetation growth, and a deterministic simulation clock.
+Milestone 3 — Research laboratory
+ Deliver the complete lab layout, functional controls, simulation snapshots, experiment execution, charts, and baseline comparisons.
+Milestone 4 — Three missions
+ Deliver the meadow, forest, and pond scenarios, with their individual initial states, objectives, evaluation logic, and results screens.
+Milestone 5 — Persistence and quality assurance
+ Deliver local saves, recovery behavior, automated tests, input validation, performance checks, and a deployable production build.
+Final product boundary
+The end-to-end MVP consists of one shared island engine, three damaged mission scenarios, seven organism types, a functional scientific dashboard, reproducible experiments, measurable restoration objectives, and persistent progress.
+Do not expand the scope beyond these requirements until the full loop—from entering the island to completing and saving all three missions—works reliably.
+
+Here are the direct download pages for your ecosystem game, organized by what you need.
+Recommended asset links
+1. Island, terrain, trees, buildings
+Tiny Islands — 16×16 tilemap, CC0
+Download Tiny Islands⁠
+Use this as your base tileset for the expanded island and mission maps.
+2. Animals and wildlife
+Tiny Creatures — 180 sprites, CC0
+Download Tiny Creatures⁠
+Includes more than 50 animals in a consistent 16×16 style. Check for the specific cow, chicken, rabbit, mouse, and fox sprites you need.
+3. Additional terrain and props
+Kenney asset library
+Browse all Kenney assets⁠
+Useful for filling gaps in vegetation, buildings, and interface assets. Check the license on each pack.
+4. More island and environment assets
+itch.io — CC0 tilesets
+Browse free CC0 tilesets⁠
+Filter for pixel art, top-down, 16×16, and tilesets to find matching assets.
+5. Alternative island assets
+itch.io — island pixel art
+Browse island tilesets⁠
+Useful if Tiny Islands does not provide enough terrain variations for your three damaged mission maps.
+My recommended starting combination: Tiny Islands for terrain and buildings, Tiny Creatures for animals, and Kenney for any missing props. Keep the 16×16 sprite scale consistent where possible.
+Download the ZIP files, inspect the PNG spritesheets, and retain each pack’s license file or license information in your project repository. CC0 packs are particularly convenient because they generally allow commercial use without mandatory attribution.
+
+
