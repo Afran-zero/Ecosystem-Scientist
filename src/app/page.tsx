@@ -50,82 +50,71 @@ export default function MainMenu() {
       </section>
 
       <div className="mx-auto grid max-w-5xl gap-6 px-6 pb-20 md:grid-cols-2">
-        <section id="about" aria-labelledby="about-title" className="eco-panel p-6 sm:p-8">
-          <h2 id="about-title" className="font-display text-2xl text-amber-100">
-            About
-          </h2>
-          <div className="mt-4 space-y-4 text-sm leading-relaxed text-slate-300">
-            <p>
-              Ecosystem Scientist is a small island where seven species live out their lives in a simulation. Grass grows and is grazed. Trees seed
-              into the forest. Rabbits, cows, chickens, mice and foxes eat, flee, hunt, breed and die by rules you can read.
-            </p>
-            <p>
-              The simulation is separate from the graphics. The same settings and seed always give the same result. The numbers live in data files, so
-              the model can be inspected and changed.
-            </p>
-            <p>
-              It is an educational model, not a forecast. Where it simplifies, the game says so. The lab shows the population charts, the food web and
-              the baseline comparison so you can check your own conclusions against the data.
-            </p>
-            <div>
-              <p className="font-semibold text-slate-200">What you will learn</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5">
-                <li>How food chains and food webs connect plants and animals, and why energy is lost at each step.</li>
-                <li>What limits a population: food, shelter, predators and the number of animals it can support.</li>
-                <li>How pollution and habitat loss reach the animals through the plants they depend on.</li>
-              </ul>
-            </div>
-            <p className="text-xs text-slate-500">
-              Art: Tiny Islands by Majadroid and Tiny Creatures by Clint Bellanger with Kenney. Both packs are CC0. Attribution is not required, and it
-              is appreciated.
-            </p>
+        <Link
+          id="about"
+          href="/about"
+          aria-labelledby="about-title"
+          className="eco-panel group block p-6 transition hover:-translate-y-0.5 hover:border-amber-200/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 sm:p-8"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <h2 id="about-title" className="font-display text-2xl text-amber-100">
+              About
+            </h2>
+            <span aria-hidden="true" className="eco-btn-ghost text-xs uppercase tracking-wider">
+              Open →
+            </span>
           </div>
-        </section>
+          <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-300">
+            <p>
+              <strong className="text-slate-100">Ecosystem Scientist</strong> is a small pixel-art island where seven species live out their lives in
+              a working simulation. Grass grows back when it is grazed. Trees seed into the forest. Rabbits, cows, chickens, mice, foxes and the rest
+              eat, flee, hunt, breed and die by rules you can read on screen and in the source files.
+            </p>
+            <p>
+              The simulation is kept separate from the graphics, so the same settings and seed always give the same result. Numbers live in plain
+              JSON files, the model is open, and the lab lets you check your own conclusions against the data.
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-2 text-[11px] text-slate-300">
+              <li className="eco-chip">Species browser</li>
+              <li className="eco-chip">Trophic pyramid</li>
+              <li className="eco-chip">Project story</li>
+            </ul>
+          </div>
+        </Link>
 
-        <section id="how-to-play" aria-labelledby="how-title" className="eco-panel p-6 sm:p-8">
-          <h2 id="how-title" className="font-display text-2xl text-amber-100">
-            How to play
-          </h2>
-          <ol className="mt-4 space-y-4 text-sm leading-relaxed text-slate-300">
-            <li>
-              <span className="font-semibold text-slate-100">1. Explore.</span> Walk around the island with the keys below. Forest, pond, meadow,
-              grassland and the coast each look different.
-            </li>
-            <li>
-              <span className="font-semibold text-slate-100">2. Inspect animals.</span> Walk up to an animal and press E. Its field guide shows where it
-              sits in the food web, how it lives, and facts you can page through.
-            </li>
-            <li>
-              <span className="font-semibold text-slate-100">3. Use the lab.</span> Walk to the Research lab and press E. Change the environment and
-              starting populations, run a control and an experiment with the same seed, then compare them on the Results tab. The Food web tab explains
-              chains and levels.
-            </li>
-            <li>
-              <span className="font-semibold text-slate-100">4. Restore a mission.</span> Walk to a mission marker and press E for the briefing. Change
-              only the allowed controls, run at least the minimum number of days, and submit your evidence. The results screen shows which criteria were
-              met and why.
-            </li>
+        <Link
+          id="how-to-play"
+          href="/how-to-play"
+          aria-labelledby="how-title"
+          className="eco-panel group block p-6 transition hover:-translate-y-0.5 hover:border-amber-200/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 sm:p-8"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <h2 id="how-title" className="font-display text-2xl text-amber-100">
+              How to play
+            </h2>
+            <span aria-hidden="true" className="eco-btn-ghost text-xs uppercase tracking-wider">
+              Open →
+            </span>
+          </div>
+          <p className="mt-4 text-sm leading-relaxed text-slate-300">
+            Your goal is to understand how the island works and to restore three damaged corners of it. Wander freely, run experiments in the lab, and
+            submit missions when you think you have fixed a corner.
+          </p>
+
+          <ol className="mt-4 space-y-2 text-sm leading-relaxed text-slate-300">
+            <li><span className="font-semibold text-slate-100">1. Explore</span> the biomes and watch the animals.</li>
+            <li><span className="font-semibold text-slate-100">2. Inspect</span> a creature with <kbd className="rounded border border-white/20 bg-slate-900 px-1 font-mono text-[0.7rem] text-amber-100">E</kbd> for its field guide.</li>
+            <li><span className="font-semibold text-slate-100">3. Use the lab</span> to design a fair experiment.</li>
+            <li><span className="font-semibold text-slate-100">4. Restore a mission</span> by meeting its criteria.</li>
           </ol>
 
-          <div className="mt-6 grid gap-3 rounded-lg border border-white/10 bg-white/5 p-4 text-sm sm:grid-cols-2">
-            <p className="font-semibold text-slate-100 sm:col-span-2">Controls</p>
-            <Key keys="W A S D or arrows" text="Move" />
-            <Key keys="E" text="Inspect, open the lab, read a briefing, or leave a mission" />
-            <Key keys="Space" text="Pause or resume the island" />
-            <Key keys="1 · 2 · 3" text="Speed 1×, 5×, 10×" />
-            <Key keys="Esc" text="Close a dialog or the lab" />
-          </div>
-        </section>
+          <ul className="mt-4 flex flex-wrap gap-2 text-[11px] text-slate-300">
+            <li className="eco-chip">Step-through tutorial</li>
+            <li className="eco-chip">Interactive food web</li>
+            <li className="eco-chip">Controls recap</li>
+          </ul>
+        </Link>
       </div>
     </main>
-  );
-}
-
-function Key({ keys, text }: { keys: string; text: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <kbd className="shrink-0 rounded border border-white/20 bg-slate-900 px-2 py-0.5 font-mono text-xs text-amber-100">{keys}</kbd>
-      <span className="text-slate-300">{text}</span>
-    </div>
   );
 }
