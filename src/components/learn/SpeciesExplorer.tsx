@@ -68,10 +68,10 @@ export default function SpeciesExplorer({
     <div className="eco-panel p-6 sm:p-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl text-amber-100">The cast of the island</h2>
-          <p className="mt-1 text-sm text-slate-400">Filter by trophic level, then click a card to read the field guide.</p>
+          <h2 className="font-display text-2xl text-honey">The cast of the island</h2>
+          <p className="mt-1 text-sm text-cream-muted">Filter by trophic level, then click a card to read the field guide.</p>
         </div>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-cream-muted">
           {filtered.length} of {all.length} shown
         </p>
       </div>

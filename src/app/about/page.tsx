@@ -40,8 +40,8 @@ export default function AboutPage() {
     <main className="mx-auto min-h-dvh max-w-5xl px-6 py-10">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300/90">About</p>
-          <h1 className="mt-2 font-display text-3xl text-amber-100 sm:text-4xl">The island, the model, the goal</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-moss-light">About</p>
+          <h1 className="mt-2 font-display text-3xl text-honey sm:text-4xl">The island, the model, the goal</h1>
         </div>
         <Link href="/" className="eco-btn">
           ← Main menu
@@ -49,17 +49,17 @@ export default function AboutPage() {
       </header>
 
       <section className="eco-panel eco-rise mt-8 p-6 sm:p-8">
-        <h2 className="font-display text-2xl text-amber-100">Project story</h2>
-        <div className="mt-4 space-y-4 text-sm leading-relaxed text-slate-300">
+        <h2 className="font-display text-2xl text-honey">Project story</h2>
+        <div className="mt-4 space-y-4 text-sm leading-relaxed text-cream-soft">
           <p>
-            <strong className="text-slate-100">Ecosystem Scientist</strong> is a small pixel-art island where seven species live out their lives in a
+            <strong className="text-cream">Ecosystem Scientist</strong> is a small pixel-art island where seven species live out their lives in a
             working simulation. Grass grows back when it is grazed. Trees seed into the forest. Rabbits, cows, chickens, mice, foxes and the rest eat,
             flee, hunt, breed and die by rules you can read on screen and in the source files.
           </p>
           <p>
             The simulation is kept separate from the graphics. The same settings, species data and seed always produce the same result, so an
-            experiment is repeatable. Numbers live in plain JSON files in <code className="rounded bg-white/10 px-1 font-mono text-[0.8rem] text-amber-200">public/data/</code>{" "}
-            and the engine in <code className="rounded bg-white/10 px-1 font-mono text-[0.8rem] text-amber-200">src/simulation/</code>, so the model can
+            experiment is repeatable. Numbers live in plain JSON files in <code className="rounded bg-cream/10 px-1 font-mono text-[0.8rem] text-honey">public/data/</code>{" "}
+            and the engine in <code className="rounded bg-cream/10 px-1 font-mono text-[0.8rem] text-honey">src/simulation/</code>, so the model can
             be inspected and changed without touching the renderer.
           </p>
           <p>
@@ -75,15 +75,15 @@ export default function AboutPage() {
       </div>
 
       <section className="eco-panel eco-rise mt-8 p-6 sm:p-8">
-        <h2 className="font-display text-2xl text-amber-100">What you will learn</h2>
-        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-300">
+        <h2 className="font-display text-2xl text-honey">What you will learn</h2>
+        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-cream-soft">
           <li>How food chains and food webs connect plants and animals, and why energy is lost at each step up the chain.</li>
           <li>What limits a population: food, shelter, predators and the carrying capacity of the habitat.</li>
           <li>How disturbances such as overgrazing, pollution or habitat loss reach the animals through the plants they depend on.</li>
           <li>How to design a fair experiment: change one variable at a time, hold the seed constant, compare against a baseline run.</li>
           <li>How to read evidence — population curves, trophic-level breakdowns, pass / fail criteria — instead of guessing.</li>
         </ul>
-        <p className="mt-5 text-xs text-slate-500">
+        <p className="mt-5 text-xs text-cream-muted">
           Art: <em>Tiny Islands</em> by Majadroid and <em>Tiny Creatures</em> by Clint Bellanger, with tiles from Kenney. Both packs are CC0 —
           attribution is not required, and it is appreciated.
         </p>

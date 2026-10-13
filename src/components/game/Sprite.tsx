@@ -13,7 +13,7 @@ export default function Sprite({ frame, scale = 4 }: { frame: number; scale?: nu
   return (
     <span
       aria-hidden="true"
-      className="inline-block shrink-0 rounded bg-slate-900/60 ring-1 ring-white/10"
+      className="inline-block shrink-0 rounded bg-walnut-dark/60 ring-1 ring-cream/10"
       style={{
         width: 16 * scale,
         height: 16 * scale,

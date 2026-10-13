@@ -1,4 +1,4 @@
-import type { EnvironmentState, ExperimentRecord, ExperimentSettings, GameConfig, WorldMap } from "@/types";
+import type { DayRecord, EnvironmentState, ExperimentRecord, ExperimentSettings, GameConfig, WorldMap } from "@/types";
 import { Simulation } from "./engine";
 import { validateSettings } from "./controls";
 
@@ -93,4 +93,14 @@ export function compareRuns(baseline: ExperimentRecord, experiment: ExperimentRe
     grassDeltaPercent: (e?.grassCoveragePercent ?? 0) - (b?.grassCoveragePercent ?? 0),
     extinctInExperiment,
   };
+}
+
+/**
+ * A quick preview of a run for the lab's live charts: the same engine, the same seed and the same
+ * settings as an experiment, but only the day records are returned. Nothing is saved.
+ */
+export function projectRun(input: RunInput, days: number): DayRecord[] {
+  const sim = buildRun(input);
+  sim.runDays(days);
+  return sim.dayRecords.map((d) => ({ ...d }));
 }

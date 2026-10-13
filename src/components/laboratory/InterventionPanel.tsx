@@ -31,8 +31,8 @@ export default function InterventionPanel() {
 
   if (!mission) {
     return (
-      <section className="max-w-2xl rounded border border-slate-700 p-4 text-sm text-slate-300">
-        <h3 className="text-sm font-semibold text-slate-100">Change the live island</h3>
+      <section className="max-w-2xl rounded border border-brown p-4 text-sm text-cream-soft">
+        <h3 className="text-sm font-semibold text-cream">Change the live island</h3>
         <p className="mt-2">Live changes are offered on a restoration mission, for the controls that mission allows. On the hub island, the island keeps its own state.</p>
       </section>
     );
@@ -71,20 +71,20 @@ export default function InterventionPanel() {
   };
 
   return (
-    <section className="max-w-2xl rounded border border-amber-300/30 bg-amber-400/5 p-4 text-sm text-slate-200" aria-labelledby="intervention-title">
-      <h3 id="intervention-title" className="text-sm font-semibold text-amber-100">
+    <section className="max-w-2xl rounded border border-honey/30 bg-honey/5 p-4 text-sm text-ink" aria-labelledby="intervention-title">
+      <h3 id="intervention-title" className="text-sm font-semibold text-honey">
         Change the live island
       </h3>
-      <p className="mt-2 text-xs text-slate-300">
+      <p className="mt-2 text-xs text-cream-soft">
         This changes the island you are standing on. It does not change experiments, and it does not change how a mission is scored. Only the controls
         this mission allows can change.
       </p>
 
       {changes.length === 0 ? (
-        <p className="mt-3 text-slate-400">The live island already matches the lab settings for the controls this mission allows.</p>
+        <p className="mt-3 text-cream-muted">The live island already matches the lab settings for the controls this mission allows.</p>
       ) : !reviewing ? (
         <div className="mt-3">
-          <p className="text-slate-200">Set in the lab, not yet on the island:</p>
+          <p className="text-cream">Set in the lab, not yet on the island:</p>
           <ul className="mt-1 list-disc pl-5">
             {changes.map((c) => (
               <li key={c.key}>
@@ -92,13 +92,13 @@ export default function InterventionPanel() {
               </li>
             ))}
           </ul>
-          <button type="button" onClick={() => setReviewing(true)} className="mt-3 rounded bg-amber-400 px-3 py-2 font-semibold text-slate-900 hover:bg-amber-300">
+          <button type="button" onClick={() => setReviewing(true)} className="mt-3 rounded bg-honey px-3 py-2 font-semibold text-ink hover:bg-honey-hover">
             Review the change
           </button>
         </div>
       ) : (
-        <div role="alertdialog" aria-label="Confirm live change" className="mt-3 rounded border border-amber-300/50 p-3">
-          <p className="font-semibold text-amber-100">Apply these changes to the live island now?</p>
+        <div role="alertdialog" aria-label="Confirm live change" className="mt-3 rounded border border-honey/50 p-3">
+          <p className="font-semibold text-honey">Apply these changes to the live island now?</p>
           <ul className="mt-1 list-disc pl-5">
             {changes.map((c) => (
               <li key={c.key}>
@@ -107,10 +107,10 @@ export default function InterventionPanel() {
             ))}
           </ul>
           <div className="mt-3 flex gap-3">
-            <button type="button" onClick={apply} className="rounded bg-amber-400 px-3 py-2 font-semibold text-slate-900 hover:bg-amber-300">
+            <button type="button" onClick={apply} className="rounded bg-honey px-3 py-2 font-semibold text-ink hover:bg-honey-hover">
               Apply to the live island
             </button>
-            <button type="button" onClick={() => setReviewing(false)} className="rounded border border-slate-500 px-3 py-2 hover:bg-slate-800">
+            <button type="button" onClick={() => setReviewing(false)} className="rounded border border-soil px-3 py-2 hover:bg-walnut">
               Cancel
             </button>
           </div>
@@ -119,8 +119,8 @@ export default function InterventionPanel() {
 
       {store.interventions.length ? (
         <div className="mt-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Changes made on this island</p>
-          <ol className="mt-1 list-decimal space-y-1 pl-5 text-xs text-slate-300">
+          <p className="text-xs font-semibold uppercase tracking-wider text-cream-muted">Changes made on this island</p>
+          <ol className="mt-1 list-decimal space-y-1 pl-5 text-xs text-cream-soft">
             {store.interventions.map((line, i) => (
               <li key={`${i}-${line}`}>{line}</li>
             ))}

@@ -6,11 +6,10 @@ Working log for this project. Read it at the start of a session, and update it a
 
 ## Current status
 
-- **Phase:** M0 to M4 done. M3.4 live change, M4.11 journal, M1.9 touch controls, M4.9 reset test, and M4.1 idempotency are done. M1.6 still open (tree art). M5 not started.
+- **Phase:** M0 to M4 done, with M1.6 done as of 2026-10-13 (drawn 16 × 32 trees and stumps). M5 not started.
 - **Next actions, in order:**
-  1. M1.6: replace the one-tile tree with a taller canopy sprite. Re-run `tests/e2e/depth-visual.spec.ts` and look at `assets/previews/depth-*.png`.
-  2. Field guides: have someone check `public/data/animal-facts.json` against a source before teaching use (D-35).
-  3. M5: saves for the live islands (Continue returns when this exists), performance check (M5.8), and deploy.
+  1. Field guides: have someone check `public/data/animal-facts.json` against a source before teaching use (D-35).
+  2. M5: saves for the live islands (Continue returns when this exists), performance check (M5.8), and deploy.
 - **Deferred:** fox persistence (D-24). The user asked for this to wait.
 
 ## Milestone progress
@@ -32,7 +31,7 @@ Update each row when its tasks in [../IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_
 - [ ] **Fox persistence** (deferred by the user). Foxes went extinct in 1 of 20 seeds over 30 days, and in 15 of 20 over 90 days. Tune later with D-20 as the starting point.
 - [x] **Q1** Forest cover definition (D-07). The user said to start M4 on 2026-10-13, which confirms it.
 - [ ] **Animal field guides** need a check against a source (D-35). They are general statements written for this game.
-- [ ] **Tree art** is a single 16 px tile, so the canopy never overlaps the player. Needs taller sprites (M1.6).
+- [x] **Tree art** was one 16 px tile, so the canopy never overlapped the player. Fixed with 16 × 32 drawn trees (M1.6).
 - [ ] **Q3** Hub soil and water quality values. Assumed.
 - [ ] Mouse and fox sprites are substitutes (D-16 and the sprite map in [ASSETS.md](ASSETS.md)).
 - [ ] Map regions are rectangles (forest, meadow). Edges look blocky. Revisit at the art pass.
@@ -42,6 +41,7 @@ Update each row when its tasks in [../IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_
 - [ ] Optional packs from the spec (Kenney, itch CC0 tilesets) not downloaded. Fetch only if a gap appears.
 
 ## Session log
+| 2026-10-13 | **Lab science.** Live response charts in Environment and Populations (D-40). Livability index (D-41). Predation recorded per prey (D-42). Base change with confirmation and return (D-43). Runs kept in browser storage (D-44). Audit fixes: trees and grass on separate charts; experiments can be deleted; the lab stays open after a base change. |
 | 2026-10-13 | **Open items closed.** Idempotency checked for `build_maps.py`. Live intervention on missions with review and confirm (D-38). Field journal at `/journal` (D-39). Touch joystick and E button (D-37). Scene tests for reset and live change. 96 unit, 13 e2e. |
 | 2026-10-13 | **M4 and polish.** Mission loader, engine and three reference strategies (D-31). Islands keep their simulation for the session (D-32). Mission progress saved through the save service (D-33). Briefing, results and animal field-guide dialogs. Food-chain lesson in the lab. Redesigned menu with About and How to play; Continue removed (D-34). Results start from the starting snapshot (D-36). M1.6 checked: not met, tree art needs a taller sprite. |
 
@@ -58,6 +58,12 @@ Update each row when its tasks in [../IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_
 | 2026-10-13 | **Repair.** `src/game/liveSimulation.ts` was missing, so `tsc` failed and the lab tests could not load. Rewrote it as the shared store (settings with validation, lab open state, saved runs, `attach`, `notify`). `npm run check` passes (73 unit tests), `next build` passes, Playwright passes 4/4 including `tree-depth.spec.ts`. M1.6 still unticked: the test checks depth order only, not the visible canopy and stump check. |
 
 ## Verification evidence
+
+- 2026-10-13 (responsive): `tests/e2e/responsive.spec.ts`: 12 of 12 pass at 1440 px and 390 px (no sideways scroll on /, /missions, /journal, /game or any lab tab; PC charts beside controls; phone charts stacked). Full suite: 123 unit, 32 e2e. Screenshots: `assets/previews/layout-pc-environment.png`, `layout-phone-environment.png`.
+
+- 2026-10-13 (lab science): `npm run check`: 104 unit tests pass, including `tests/simulation/lab-science.test.ts` (predators eat prey, animals are born, projection equals experiment, livability bounds, storage keeps and drops runs). Playwright: 17 of 17 pass, including `tests/e2e/lab-tools.spec.ts` (live charts respond to populations, base confirmed and returned, runs survive a reload and can be deleted). Lab screenshots: `assets/previews/lab-live-response.png`, `lab-results-audit.png`.
+
+- 2026-10-13 (M1.6): `tests/e2e/depth-visual.spec.ts` (hub, forest, and the forest stump) and `tree-depth.spec.ts` pass. Frames checked by eye in `assets/previews/depth-*.png`: the canopy covers the player's head when north of a tree, and the player is drawn over the trunk when south. `npm run check`: 96 pass. Playwright: 14 of 14 pass.
 
 - 2026-10-13 (open items): `npm run check`: 96 unit tests in 11 files pass. `next build` passes. Playwright: 13 of 13 pass, including `tests/e2e/gaps.spec.ts` (mission reset to the exact start snapshot, live change after review, journal across reload, touch joystick and E button). M4.1: `build_maps.py` run twice gives identical SHA-256 for all four maps.
 
@@ -91,4 +97,6 @@ Record test names, benchmark numbers, and deployed URLs here as they are produce
 - Raw downloads go in `assets/sources/` (not served). Only used files go into `public/`.
 - The hub map is generated by `python tools/build_hub_map.py`. Edit the script, not the JSON.
 - Invalid lab input is rejected, never clamped (D-26).
-- Do not add a backend, accounts, or 
+- Do not add a backend, accounts, or extra species. Spec §11 forbids scope expansion until the full loop works.
+- Commit messages and PR descriptions use the attribution lines from the session instructions.
+- Heredocs with backticks or `$` in bash have failed here. Prefer the Write tool or a Python script for file content.

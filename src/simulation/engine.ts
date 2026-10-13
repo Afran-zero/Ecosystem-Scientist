@@ -72,6 +72,7 @@ export class Simulation {
   private dayBirths: Record<string, number> = {};
   private dayDeaths: Record<string, number> = {};
   private dayHunts = 0;
+  private dayEaten: Record<string, number> = {};
 
   private constructor(config: GameConfig, world: WorldMap, snap: SimulationSnapshot) {
     this.config = config;
@@ -373,6 +374,7 @@ export class Simulation {
         a.energy = clamp(a.energy + (sp.preyEnergyGain ?? 0), 0, ENERGY_MAX);
         a.state = "eat";
         this.dayHunts += 1;
+        this.dayEaten[target.speciesId] = (this.dayEaten[target.speciesId] ?? 0) + 1;
       }
       a.targetId = undefined;
       return;
@@ -599,6 +601,7 @@ export class Simulation {
       births: { ...this.dayBirths },
       deaths: { ...this.dayDeaths },
       huntsSucceeded: this.dayHunts,
+      eaten: { ...this.dayEaten },
       grassCoveragePercent: this.grassCoveragePercent(),
       grassByRegion: this.grassByRegion(),
       treeCount: this.trees.length,
@@ -615,6 +618,7 @@ export class Simulation {
     this.dayBirths = {};
     this.dayDeaths = {};
     this.dayHunts = 0;
+    this.dayEaten = {};
     // Dead animals leave the live list after the day is recorded. Their counts are kept in the record.
     this.animals = this.animals.filter((a) => a.alive);
   }

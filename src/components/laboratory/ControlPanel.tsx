@@ -36,16 +36,16 @@ function ControlRow({
   };
 
   return (
-    <div className={`grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 border-b border-slate-700/60 py-3 ${locked ? "opacity-60" : ""}`}>
-      <div className="flex items-baseline justify-between">
-        <label htmlFor={`ctl-${spec.key}`} className="text-sm font-medium text-slate-100">
+    <div className={`grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 border-b border-brown/60 py-3 ${locked ? "opacity-60" : ""}`}>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+        <label htmlFor={`ctl-${spec.key}`} className="text-sm font-medium text-cream">
           {spec.label}
         </label>
-        <span className="text-xs text-slate-400">
+        <span className="whitespace-nowrap text-xs text-cream-muted">
           {spec.min}–{spec.max} {spec.unit}
         </span>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 flex-wrap items-center gap-2">
         <input
           id={`ctl-${spec.key}`}
           type="range"
@@ -55,7 +55,7 @@ function ControlRow({
           value={value}
           disabled={locked}
           onChange={(e) => liveSimulation.setSetting(spec.key, Number(e.target.value))}
-          className="w-40 accent-emerald-500 sm:w-56"
+          className="min-w-0 flex-1 accent-honey sm:w-56 sm:flex-none"
           aria-describedby={error ? `err-${spec.key}` : undefined}
         />
         <input
@@ -75,23 +75,23 @@ function ControlRow({
             // Keep typing in this box away from the island's keyboard controls.
             if (e.key !== "Escape") e.stopPropagation();
           }}
-          className="w-20 rounded border border-slate-600 bg-slate-900 px-2 py-1 text-right text-sm"
+          className="w-20 rounded border border-brown bg-walnut-dark px-2 py-1 text-right text-sm"
           aria-invalid={Boolean(error)}
         />
-        <span className="w-16 text-xs text-slate-400">{spec.unit}</span>
+        <span className="whitespace-nowrap text-xs text-cream-muted">{spec.unit}</span>
         <button
           type="button"
           disabled={locked}
           onClick={() => liveSimulation.setSetting(spec.key, fallback)}
-          className="rounded border border-slate-600 px-2 py-1 text-xs text-slate-300 hover:bg-slate-800 disabled:opacity-40"
+          className="rounded border border-brown px-2 py-1 text-xs text-cream-soft hover:bg-walnut disabled:opacity-40"
         >
           Reset
         </button>
       </div>
-      {locked ? <p className="col-span-2 text-xs text-amber-200/80">Locked for this mission. It is part of the damaged starting state.</p> : null}
-      {spec.note ? <p className="col-span-2 text-xs text-slate-400">{spec.note}</p> : null}
+      {locked ? <p className="col-span-2 text-xs text-honey">Locked for this mission. It is part of the damaged starting state.</p> : null}
+      {spec.note ? <p className="col-span-2 text-xs text-cream-muted">{spec.note}</p> : null}
       {error ? (
-        <p id={`err-${spec.key}`} role="alert" className="col-span-2 text-xs text-rose-300">
+        <p id={`err-${spec.key}`} role="alert" className="col-span-2 text-xs text-rust-light">
           {error}
         </p>
       ) : null}
@@ -121,7 +121,7 @@ export default function ControlPanel({ group }: { group: ControlSpec["group"] })
         <button
           type="button"
           onClick={() => liveSimulation.resetSettings()}
-          className="rounded border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800"
+          className="rounded border border-brown px-3 py-1.5 text-sm text-cream hover:bg-walnut"
         >
           {mission ? "Reset all to the mission start" : "Reset all to defaults"}
         </button>

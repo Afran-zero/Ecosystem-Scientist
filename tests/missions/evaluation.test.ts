@@ -32,6 +32,7 @@ function day(d: number, grass: number, rabbits: number, extra: Partial<DayRecord
     births: {},
     deaths: {},
     huntsSucceeded: 0,
+    eaten: {},
     grassCoveragePercent: grass,
     grassByRegion: { grassland: grass },
     treeCount: 18,

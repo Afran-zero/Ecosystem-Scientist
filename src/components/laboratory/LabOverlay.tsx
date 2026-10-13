@@ -6,6 +6,7 @@ import ControlPanel from "./ControlPanel";
 import ExperimentsPanel from "./ExperimentsPanel";
 import FoodChainLesson from "./FoodChainLesson";
 import InterventionPanel from "./InterventionPanel";
+import ProjectionCharts from "./ProjectionCharts";
 import FoodWebDiagram from "./FoodWebDiagram";
 import ResultsPanel from "./ResultsPanel";
 
@@ -43,24 +44,24 @@ export default function LabOverlay() {
   if (!open || !live) return null;
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Research laboratory" className="fixed inset-0 z-50 flex flex-col bg-slate-950/97 text-slate-100">
-      <header className="flex items-center justify-between border-b border-slate-700 px-4 py-3">
+    <div role="dialog" aria-modal="true" aria-label="Research laboratory" className="fixed inset-0 z-50 flex flex-col bg-ink/97 text-cream">
+      <header className="flex items-center justify-between border-b border-brown px-4 py-3">
         <div>
           <h2 className="text-base font-semibold">Research Laboratory</h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-cream-muted">
             {live.mission ? `Mission: ${live.mission.title}.` : "Sandbox on the hub island."} The island is paused while the lab is open.
           </p>
         </div>
         <button
           type="button"
           onClick={() => liveSimulation.closeLab()}
-          className="rounded border border-slate-500 px-3 py-1.5 text-sm hover:bg-slate-800"
+          className="rounded border border-soil px-3 py-1.5 text-sm hover:bg-walnut"
         >
           Back to island (Esc)
         </button>
       </header>
 
-      <nav className="flex gap-1 overflow-x-auto border-b border-slate-700 px-3" aria-label="Laboratory sections">
+      <nav className="flex gap-1 overflow-x-auto border-b border-brown px-3" aria-label="Laboratory sections">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -68,14 +69,14 @@ export default function LabOverlay() {
             role="tab"
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
-            className={`whitespace-nowrap border-b-2 px-3 py-2 text-sm ${tab === t.id ? "border-emerald-400 text-white" : "border-transparent text-slate-400 hover:text-slate-200"}`}
+            className={`whitespace-nowrap border-b-2 px-3 py-2 text-sm ${tab === t.id ? "border-moss-light text-cream" : "border-transparent text-cream-muted hover:text-cream"}`}
           >
             {t.label}
           </button>
         ))}
       </nav>
 
-      <main className="min-h-0 flex-1 overflow-y-auto p-4">
+      <main className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4 xl:p-6">
         {tab === "overview" ? <Overview /> : null}
         {tab === "environment" ? <EnvironmentTab /> : null}
         {tab === "populations" ? <PopulationsTab /> : null}
@@ -105,21 +106,21 @@ function Overview() {
   const health = Math.round(0.5 * grass + 0.5 * (present / live.config.species.length) * 100);
   const env = sim.environment;
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <section className="rounded border border-slate-700 p-4">
+    <div className="eco-grid">
+      <section className="rounded border border-brown p-4">
         <h3 className="text-sm font-semibold">Simulation day</h3>
         <p className="mt-1 text-3xl font-bold">Day {sim.currentDay + 1}</p>
-        <p className="text-xs text-slate-400">Hour {sim.currentHour % 24} of 24</p>
+        <p className="text-xs text-cream-muted">Hour {sim.currentHour % 24} of 24</p>
       </section>
-      <section className="rounded border border-slate-700 p-4">
+      <section className="rounded border border-brown p-4">
         <h3 className="text-sm font-semibold">Ecosystem health</h3>
         <p className="mt-1 text-3xl font-bold">{health} / 100</p>
-        <p className="text-xs text-slate-400">Composite: half grass coverage ({grass.toFixed(1)}%), half species present ({present} of {live.config.species.length}).</p>
+        <p className="text-xs text-cream-muted">Composite: half grass coverage ({grass.toFixed(1)}%), half species present ({present} of {live.config.species.length}).</p>
       </section>
-      <section className="rounded border border-slate-700 p-4">
+      <section className="rounded border border-brown p-4">
         <h3 className="text-sm font-semibold">Population totals</h3>
         <p className="mt-1 text-2xl font-bold">{total} animals</p>
-        <ul className="mt-2 grid grid-cols-2 gap-1 text-sm text-slate-300">
+        <ul className="mt-2 grid grid-cols-2 gap-1 text-sm text-cream-soft">
           {live.config.species.map((s) => (
             <li key={s.id}>
               {s.displayName}: {counts[s.id]}
@@ -127,14 +128,14 @@ function Overview() {
           ))}
         </ul>
       </section>
-      <section className="rounded border border-slate-700 p-4">
+      <section className="rounded border border-brown p-4">
         <h3 className="text-sm font-semibold">Active mission</h3>
-        <p className="mt-1 text-sm font-medium text-slate-100">{live.mission ? live.mission.title : "None. Sandbox on the hub island."}</p>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-sm font-medium text-cream">{live.mission ? live.mission.title : "None. Sandbox on the hub island."}</p>
+        <p className="mt-1 text-xs text-cream-muted">
           {live.mission ? live.mission.problem : "Open a mission from its briefing point on the island to start a restoration task."}
         </p>
         <h3 className="mt-4 text-sm font-semibold">Current world state</h3>
-        <ul className="mt-1 grid grid-cols-2 gap-1 text-sm text-slate-300">
+        <ul className="mt-1 grid grid-cols-2 gap-1 text-sm text-cream-soft">
           <li>Temperature: {env.temperatureC} °C</li>
           <li>Rainfall: {env.rainfallMmPerDay} mm/day</li>
           <li>Sunlight: {env.sunlightPercent}%</li>
@@ -149,13 +150,16 @@ function Overview() {
 
 function EnvironmentTab() {
   return (
-    <div className="max-w-2xl">
-      <p className="mb-3 text-sm text-slate-300">
-        These sliders set the conditions for experiments. The live island keeps its own environment. A labelled intervention on the live island is not built yet (plan M3.4).
-      </p>
-      <ControlPanel group="environment" />
-      <div className="mt-6">
+    <div className="eco-split">
+      <div className="eco-split-side min-w-0 space-y-5">
+        <p className="text-sm text-cream-soft">
+          These sliders set the conditions for experiments. The live island keeps its own environment. A labelled intervention on the live island is not built yet (plan M3.4).
+        </p>
+        <ControlPanel group="environment" />
         <InterventionPanel />
+      </div>
+      <div className="min-w-0">
+        <ProjectionCharts />
       </div>
     </div>
   );
@@ -168,19 +172,20 @@ function PopulationsTab() {
   const days = sim.dayRecords;
   const last = days[days.length - 1];
   return (
-    <div className="space-y-6">
-      <section className="max-w-2xl">
+    <div className="eco-split">
+      <section className="eco-split-side min-w-0">
         <h3 className="mb-2 text-sm font-semibold">Starting populations and grass (for experiments)</h3>
-        <p className="mb-3 text-sm text-slate-300">
+        <p className="mb-3 text-sm text-cream-soft">
           These change the starting state of a new experiment only. They never add or remove animals from the live island.
         </p>
         <ControlPanel group="populations" />
       </section>
+      <div className="min-w-0 space-y-6">
       <section>
         <h3 className="mb-2 text-sm font-semibold">Live island now</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-200">
-            <thead className="text-xs text-slate-400">
+          <table className="w-full text-left text-sm text-cream">
+            <thead className="text-xs text-cream-muted">
               <tr>
                 <th className="py-1 pr-4">Species</th>
                 <th className="py-1 pr-4">Class</th>
@@ -197,7 +202,7 @@ function PopulationsTab() {
                 const prev = days.length > 1 ? days[days.length - 2].counts[s.id] : undefined;
                 const growth = prev && prev > 0 ? ((counts[s.id] - prev) / prev) * 100 : null;
                 return (
-                  <tr key={s.id} className="border-t border-slate-800">
+                  <tr key={s.id} className="border-t border-brown">
                     <td className="py-1 pr-4">{s.displayName}</td>
                     <td className="py-1 pr-4 capitalize">{s.classification}</td>
                     <td className="py-1 pr-4">{counts[s.id]}</td>
@@ -210,8 +215,10 @@ function PopulationsTab() {
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-xs text-slate-400">Birth and death columns refer to the last completed in-game day.</p>
+        <p className="mt-2 text-xs text-cream-muted">Birth and death columns refer to the last completed in-game day.</p>
       </section>
+      <ProjectionCharts />
+      </div>
     </div>
   );
 }

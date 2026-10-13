@@ -67,7 +67,7 @@ export default function FoodChainLesson({ config }: { config: GameConfig }) {
   const rabbitLevel = a.level.rabbit;
 
   return (
-    <div className="space-y-5 text-sm text-slate-200">
+    <div className="space-y-5 text-sm text-cream">
       <section>
         <h3 className="eco-heading">Food chains and food webs</h3>
         <p className="mt-1 leading-relaxed">
@@ -88,9 +88,9 @@ export default function FoodChainLesson({ config }: { config: GameConfig }) {
             .slice()
             .sort((x, y) => (a.level[x.id] ?? 9) - (a.level[y.id] ?? 9))
             .map((s) => (
-              <li key={s.id} className="flex items-center justify-between rounded border border-slate-700 px-3 py-2">
+              <li key={s.id} className="flex items-center justify-between rounded border border-brown px-3 py-2">
                 <span>{s.displayName}</span>
-                <span className="text-xs text-slate-300">
+                <span className="text-xs text-cream-soft">
                   Level {a.level[s.id] ?? "–"}: {LEVEL_NAMES[(a.level[s.id] ?? 1) - 1] ?? "Consumer"}
                 </span>
               </li>
@@ -105,8 +105,8 @@ export default function FoodChainLesson({ config }: { config: GameConfig }) {
             <li key={chain.join(">")} className="flex flex-wrap items-center gap-1.5">
               {chain.map((id, i) => (
                 <span key={`${id}-${i}`} className="flex items-center gap-1.5">
-                  <span className="rounded bg-slate-800 px-2 py-0.5">{a.names[id] ?? id}</span>
-                  {i < chain.length - 1 ? <span aria-hidden="true" className="text-slate-500">→</span> : null}
+                  <span className="rounded bg-walnut px-2 py-0.5">{a.names[id] ?? id}</span>
+                  {i < chain.length - 1 ? <span aria-hidden="true" className="text-cream-muted">→</span> : null}
                 </span>
               ))}
             </li>
@@ -122,14 +122,14 @@ export default function FoodChainLesson({ config }: { config: GameConfig }) {
           at the top of a long chain.
         </p>
         {foxLevel !== undefined ? (
-          <p className="mt-2 text-slate-300">In this model the fox is at level {foxLevel}, so it depends on the grass through prey animals.</p>
+          <p className="mt-2 text-cream-soft">In this model the fox is at level {foxLevel}, so it depends on the grass through prey animals.</p>
         ) : null}
       </section>
 
       {a.omnivoreNotes.length ? (
         <section>
           <h3 className="eco-heading">A note on omnivores</h3>
-          <ul className="mt-1 list-disc space-y-1 pl-5 text-slate-300">
+          <ul className="mt-1 list-disc space-y-1 pl-5 text-cream-soft">
             {a.omnivoreNotes.map((n) => (
               <li key={n}>{n}</li>
             ))}
@@ -137,7 +137,7 @@ export default function FoodChainLesson({ config }: { config: GameConfig }) {
         </section>
       ) : null}
 
-      <section className="rounded-lg border border-white/10 bg-white/5 p-4">
+      <section className="rounded-lg border border-cream/10 bg-cream/5 p-4">
         <h3 className="eco-heading">Check yourself</h3>
         <Question
           id="arrow"
@@ -181,9 +181,9 @@ function Question({
   const open = Boolean(answered[id]);
   return (
     <div className="mt-3">
-      <p className="text-slate-100">{q}</p>
+      <p className="text-cream">{q}</p>
       {open ? (
-        <p className="mt-1 text-emerald-200">{a}</p>
+        <p className="mt-1 text-moss-light">{a}</p>
       ) : (
         <button type="button" onClick={() => onReveal(id)} className="eco-btn mt-2 text-xs">
           Show the answer

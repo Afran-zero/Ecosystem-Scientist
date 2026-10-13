@@ -68,14 +68,14 @@ export default function SpeciesDialog({
         <div className="flex flex-col items-center gap-3">
           <span
             aria-hidden="true"
-            className={`rounded bg-slate-900/60 ring-1 ${colors.ring}`}
+            className={`rounded bg-walnut-dark/60 ring-1 ${colors.ring}`}
             style={creatureSpriteStyle(sp.sprite, 7)}
           />
           <span className={`eco-chip capitalize ${colors.bg}`}>
             <span className={colors.text}>● </span>
             {colors.label}
           </span>
-          {guide ? <span className="text-xs italic text-slate-400">{guide.latin}</span> : null}
+          {guide ? <span className="text-xs italic text-cream-muted">{guide.latin}</span> : null}
         </div>
 
         <div className="space-y-4">
@@ -90,7 +90,7 @@ export default function SpeciesDialog({
             <Stat label="Starting (hub)" value={String(sp.startingPopulationHub)} />
           </section>
 
-          <section className="grid gap-3 text-sm text-slate-200 sm:grid-cols-2">
+          <section className="grid gap-3 text-sm text-cream sm:grid-cols-2">
             <Field
               title="Eats"
               text={eats.length ? eats.map((e) => `${KIND_VERB[e.kind]} ${nameOf(species, e.prey)}`).join("; ") : "Nothing in this model."}
@@ -104,7 +104,7 @@ export default function SpeciesDialog({
             {guide ? <Field title="Behaviour" text={guide.behaviour} /> : null}
           </section>
 
-          {guide ? <FactSubtitle facts={guide.facts} /> : <p className="text-sm text-slate-400">Loading field notes…</p>}
+          {guide ? <FactSubtitle facts={guide.facts} /> : <p className="text-sm text-cream-muted">Loading field notes…</p>}
         </div>
       </div>
     </Modal>
@@ -113,9 +113,9 @@ export default function SpeciesDialog({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-white/10 bg-white/5 px-3 py-2">
-      <p className="text-[11px] uppercase tracking-wider text-slate-400">{label}</p>
-      <p className="mt-0.5 text-sm font-medium text-slate-100">{value}</p>
+    <div className="rounded-md border border-cream/10 bg-cream/5 px-3 py-2">
+      <p className="text-[11px] uppercase tracking-wider text-cream-muted">{label}</p>
+      <p className="mt-0.5 text-sm font-medium text-cream">{value}</p>
     </div>
   );
 }
@@ -123,7 +123,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Field({ title, text }: { title: string; text: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wider text-emerald-300/90">{title}</p>
+      <p className="text-xs font-semibold uppercase tracking-wider text-moss-light">{title}</p>
       <p className="mt-1 leading-relaxed">{text}</p>
     </div>
   );
@@ -140,17 +140,17 @@ function FactSubtitle({ facts }: { facts: string[] }) {
   const [index, setIndex] = useState(() => pick(null));
 
   return (
-    <div className="rounded-lg border border-amber-300/20 bg-slate-950/60 p-4">
+    <div className="rounded-lg border border-honey/20 bg-ink/60 p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Did you know?</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-honey">Did you know?</p>
         <button type="button" onClick={() => setIndex(pick(index))} className="eco-btn-ghost text-xs">
           Another fact
         </button>
       </div>
-      <p aria-live="polite" className="mt-2 min-h-[3.5rem] text-base leading-relaxed text-slate-100">
+      <p aria-live="polite" className="mt-2 min-h-[3.5rem] text-base leading-relaxed text-cream">
         {facts[index]}
       </p>
-      <p className="mt-1 text-right text-xs text-slate-500">
+      <p className="mt-1 text-right text-xs text-cream-muted">
         Fact {index + 1} of {facts.length}
       </p>
     </div>

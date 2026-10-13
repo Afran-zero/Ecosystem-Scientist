@@ -8,7 +8,7 @@ export default function CreditFooter() {
     <footer className="mx-auto mt-6 max-w-5xl px-6 pb-10">
       <div className="eco-panel flex flex-col items-center gap-3 p-5 text-center sm:flex-row sm:justify-between sm:text-left">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-moss-light/90">Made by</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-moss-light">Made by</p>
           <p className="mt-1 font-display text-lg text-honey">Jannateen Tazree Warisa</p>
           <p className="text-xs text-cream-soft">
             Class 12 · Mohammadpur Preparatory School and College

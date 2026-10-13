@@ -43,27 +43,27 @@ export default function JournalPage() {
   const labOpened = journal.discovered.includes("research-lab");
 
   return (
-    <main className="mx-auto min-h-dvh max-w-6xl px-6 py-10">
+    <main className="paper mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 2xl:max-w-7xl">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300/90">Field journal</p>
-          <h1 className="mt-2 font-display text-3xl text-amber-100 sm:text-4xl">What you have met on the island</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-moss-light">Field journal</p>
+          <h1 className="mt-2 font-display text-3xl text-honey sm:text-4xl">What you have met on the island</h1>
         </div>
         <Link href="/" className="eco-btn">
           Main menu
         </Link>
       </header>
 
-      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300">
+      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-cream-soft">
         A species is added the first time you inspect one with E. Each inspection is recorded with the island, the day and what the animal was doing.
         The lab is recorded when you first open it.
       </p>
-      <p className="mt-2 text-xs text-slate-400">
+      <p className="mt-2 text-xs text-cream-muted">
         {journal.discovered.filter((d) => d !== "research-lab").length} of {species?.species.length ?? "…"} species discovered · Research lab{" "}
         {labOpened ? "opened" : "not opened yet"}
       </p>
 
-      <section className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3" aria-label="Species">
+      <section className="eco-grid-wide mt-8" aria-label="Species">
         {(species?.species ?? []).map((sp) => {
           const found = journal.discovered.includes(sp.id);
           const guide = guides?.[sp.id];
@@ -74,8 +74,8 @@ export default function JournalPage() {
             return (
               <article key={sp.id} className="eco-panel flex flex-col items-start gap-3 p-5 opacity-70">
                 <Sprite frame={sp.sprite} scale={3} />
-                <h2 className="font-display text-lg text-slate-400">Not yet discovered</h2>
-                <p className="text-sm text-slate-400">Walk up to one on the island and press E to add it to the journal.</p>
+                <h2 className="font-display text-lg text-cream-muted">Not yet discovered</h2>
+                <p className="text-sm text-cream-muted">Walk up to one on the island and press E to add it to the journal.</p>
               </article>
             );
           }
@@ -84,13 +84,13 @@ export default function JournalPage() {
               <div className="flex items-start gap-4">
                 <Sprite frame={sp.sprite} scale={3} />
                 <div>
-                  <h2 className="font-display text-xl text-amber-100">{sp.displayName}</h2>
-                  <p className="text-xs italic text-slate-400">{guide?.latin}</p>
+                  <h2 className="font-display text-xl text-honey">{sp.displayName}</h2>
+                  <p className="text-xs italic text-cream-muted">{guide?.latin}</p>
                   <span className="eco-chip mt-1 capitalize">{sp.classification}</span>
                 </div>
               </div>
               {guide ? (
-                <dl className="space-y-2 text-sm text-slate-300">
+                <dl className="space-y-2 text-sm text-cream-soft">
                   <div>
                     <dt className="eco-heading text-xs uppercase tracking-wider">Habitat</dt>
                     <dd>{guide.habitat}</dd>
@@ -101,11 +101,11 @@ export default function JournalPage() {
                   </div>
                 </dl>
               ) : null}
-              <p className="text-sm text-slate-300">
+              <p className="text-sm text-cream-soft">
                 {eats.length ? `Eats: ${eats.map((e) => name(e.prey)).join(", ")}. ` : "Eats nothing in this model. "}
                 {eatenBy.length ? `Eaten by: ${eatenBy.map((e) => name(e.predator)).join(", ")}.` : "No predator in this model."}
               </p>
-              <p className="mt-auto text-xs text-slate-400">
+              <p className="mt-auto text-xs text-cream-muted">
                 {sightings.length} observation{sightings.length === 1 ? "" : "s"}
                 {sightings.length ? `. Last: ${sightings[sightings.length - 1].text}` : ""}
               </p>
@@ -117,11 +117,11 @@ export default function JournalPage() {
       <section className="mt-10 grid gap-8 lg:grid-cols-2">
         <div>
           <h2 className="eco-heading text-lg">Trophic relationships</h2>
-          <ul className="mt-3 space-y-1.5 text-sm text-slate-300">
+          <ul className="mt-3 space-y-1.5 text-sm text-cream-soft">
             {(web?.edges ?? []).map((e) => (
               <li key={`${e.prey}-${e.predator}`}>
-                <span className="text-slate-100">{name(e.predator)}</span> {KIND_WORD[e.kind] ?? "eats"}{" "}
-                <span className="text-slate-100">{name(e.prey)}</span>
+                <span className="text-cream">{name(e.predator)}</span> {KIND_WORD[e.kind] ?? "eats"}{" "}
+                <span className="text-cream">{name(e.prey)}</span>
               </li>
             ))}
           </ul>
@@ -129,11 +129,11 @@ export default function JournalPage() {
         <div>
           <h2 className="eco-heading text-lg">Observations</h2>
           {journal.observations.length === 0 ? (
-            <p className="mt-3 text-sm text-slate-400">No observations yet.</p>
+            <p className="mt-3 text-sm text-cream-muted">No observations yet.</p>
           ) : (
-            <ol className="mt-3 max-h-96 space-y-2 overflow-y-auto pr-2 text-sm text-slate-300">
+            <ol className="mt-3 max-h-96 space-y-2 overflow-y-auto pr-2 text-sm text-cream-soft">
               {[...journal.observations].reverse().slice(0, 100).map((o) => (
-                <li key={o.id} className="rounded border border-white/10 px-3 py-2">
+                <li key={o.id} className="rounded border border-cream/10 px-3 py-2">
                   {o.text}
                 </li>
               ))}

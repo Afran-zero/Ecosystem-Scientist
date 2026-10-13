@@ -27,28 +27,28 @@ export default function SpeciesCard({
       aria-pressed={selected}
       className={[
         "eco-panel eco-rise group flex w-full flex-col items-start gap-3 p-4 text-left transition",
-        "hover:-translate-y-0.5 hover:border-amber-200/30 focus:outline-none",
-        selected ? "ring-2 ring-amber-300/60" : "",
+        "hover:-translate-y-0.5 hover:border-honey/30 focus:outline-none",
+        selected ? "ring-2 ring-honey/60" : "",
       ].join(" ")}
       style={{ animationDelay: `${delayMs}ms` }}
     >
       <div className="flex w-full items-start gap-3">
         <span
           aria-hidden="true"
-          className={`rounded bg-slate-900/60 ring-1 ${colors.ring}`}
+          className={`rounded bg-walnut-dark/60 ring-1 ${colors.ring}`}
           style={creatureSpriteStyle(species.sprite, 4)}
         />
         <div className="min-w-0 flex-1">
-          <h3 className="font-display text-lg leading-tight text-amber-100">{species.displayName}</h3>
+          <h3 className="font-display text-lg leading-tight text-honey">{species.displayName}</h3>
           <span className={`mt-1 inline-block text-[11px] font-semibold uppercase tracking-wider ${colors.text}`}>
             {colors.label}
           </span>
         </div>
       </div>
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-cream-muted">
         Speed {species.speedTilesPerHour.toFixed(1)} tiles/h · Max pop {species.maxPopulation}
       </p>
-      <p className="mt-auto text-[11px] uppercase tracking-wider text-amber-200/70 group-hover:text-amber-200">
+      <p className="mt-auto text-[11px] uppercase tracking-wider text-honey group-hover:text-honey">
         Open details →
       </p>
     </button>

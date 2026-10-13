@@ -21,7 +21,7 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
   if (!m) {
     return (
       <Modal title="Mission results" onClose={onClose}>
-        <p className="text-sm text-slate-300">Loading the results…</p>
+        <p className="text-sm text-cream-soft">Loading the results…</p>
       </Modal>
     );
   }
@@ -35,10 +35,10 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
 
   return (
     <Modal title={`${m.title}: results`} onClose={onClose} wide>
-      <div className="space-y-6 text-sm text-slate-200">
-        <div className={`rounded-lg border p-4 ${outcome.passed ? "border-emerald-400/40 bg-emerald-500/10" : "border-amber-300/30 bg-amber-400/5"}`}>
-          <p className="font-display text-xl text-amber-100">{outcome.passed ? "Mission complete" : "Not complete yet"}</p>
-          <p className="mt-1 text-slate-300">
+      <div className="space-y-6 text-sm text-cream">
+        <div className={`rounded-lg border p-4 ${outcome.passed ? "border-moss-light/40 bg-honey-hover/10" : "border-honey/30 bg-honey/5"}`}>
+          <p className="font-display text-xl text-honey">{outcome.passed ? "Mission complete" : "Not complete yet"}</p>
+          <p className="mt-1 text-cream-soft">
             {outcome.passed
               ? "The run met every criterion and your evidence was recorded. Progress is saved in this browser."
               : "At least one criterion is not met, or the submission is incomplete. The list below shows what to change."}
@@ -48,7 +48,7 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
         <section>
           <h3 className="eco-heading">Success criteria</h3>
           <table className="mt-2 w-full text-left">
-            <thead className="text-xs text-slate-400">
+            <thead className="text-xs text-cream-muted">
               <tr>
                 <th className="py-1 pr-3">Criterion</th>
                 <th className="py-1 pr-3">Measured</th>
@@ -57,16 +57,16 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
             </thead>
             <tbody>
               {outcome.objectives.map((o) => (
-                <tr key={o.id} className="border-t border-white/10">
+                <tr key={o.id} className="border-t border-cream/10">
                   <td className="py-1.5 pr-3">{o.text}</td>
                   <td className="py-1.5 pr-3 tabular-nums">{Number.isFinite(o.measured) ? fmt(o.measured) : "–"}</td>
-                  <td className={`py-1.5 pr-3 font-medium ${o.passed ? "text-emerald-300" : "text-rose-300"}`}>{o.passed ? "Met" : "Not met"}</td>
+                  <td className={`py-1.5 pr-3 font-medium ${o.passed ? "text-moss-light" : "text-rust-light"}`}>{o.passed ? "Met" : "Not met"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           {outcome.problems.length ? (
-            <ul className="mt-3 list-disc pl-5 text-amber-200">
+            <ul className="mt-3 list-disc pl-5 text-honey">
               {outcome.problems.map((p) => (
                 <li key={p}>{p}</li>
               ))}
@@ -86,15 +86,15 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
                 ))}
               </ul>
             ) : (
-              <p className="mt-2 text-slate-400">No changes from the starting state. This run is a control.</p>
+              <p className="mt-2 text-cream-muted">No changes from the starting state. This run is a control.</p>
             )}
-            <p className="mt-2 text-slate-400">
+            <p className="mt-2 text-cream-muted">
               Duration: {record.durationDays} days (seed {record.seed})
             </p>
           </div>
           <div>
             <h3 className="eco-heading">Your evidence</h3>
-            <blockquote className="mt-2 rounded border-l-2 border-amber-300/50 pl-3 italic text-slate-300">{result.evidence}</blockquote>
+            <blockquote className="mt-2 rounded border-l-2 border-honey/50 pl-3 italic text-cream-soft">{result.evidence}</blockquote>
           </div>
         </section>
 
@@ -104,7 +104,7 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
             <table className="mt-2 w-full text-left">
               <tbody>
                 {environment.map((r) => (
-                  <tr key={r.label} className="border-t border-white/10">
+                  <tr key={r.label} className="border-t border-cream/10">
                     <td className="py-1 pr-3">{r.label}</td>
                     <td className="py-1 pr-3 tabular-nums">
                       {fmt(r.from)} → {fmt(r.to)} {r.unit}
@@ -119,7 +119,7 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
             <table className="mt-2 w-full text-left">
               <tbody>
                 {animals.map((r) => (
-                  <tr key={r.label} className="border-t border-white/10">
+                  <tr key={r.label} className="border-t border-cream/10">
                     <td className="py-1 pr-3">{r.label}</td>
                     <td className="py-1 pr-3 tabular-nums">
                       {r.from} → {r.to}
@@ -133,7 +133,7 @@ export default function MissionResult({ onClose }: { onClose: () => void }) {
 
         <section>
           <h3 className="eco-heading">What the data shows</h3>
-          <ul className="mt-2 list-disc space-y-1.5 pl-5 text-slate-300">
+          <ul className="mt-2 list-disc space-y-1.5 pl-5 text-cream-soft">
             {explanation.map((line) => (
               <li key={line}>{line}</li>
             ))}

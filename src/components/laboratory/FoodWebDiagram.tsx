@@ -10,11 +10,11 @@ import type { GameConfig, SpeciesClass } from "@/types";
  */
 
 const CLASS_COLOUR: Record<SpeciesClass | "tree", string> = {
-  producer: "#4ade80",
-  herbivore: "#facc15",
-  omnivore: "#fb923c",
-  carnivore: "#f87171",
-  tree: "#86efac",
+  producer: "#9BC45E",
+  herbivore: "#F2C14E",
+  omnivore: "#E88A3C",
+  carnivore: "#D9573B",
+  tree: "#7FB36A",
 };
 
 const CLASS_LABEL: Record<SpeciesClass | "tree", string> = {
@@ -64,13 +64,13 @@ export default function FoodWebDiagram({ config }: { config: GameConfig }) {
 
   return (
     <div className="space-y-3">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full max-w-xl rounded bg-slate-900" role="img" aria-label="Food web">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full max-w-xl rounded bg-walnut-dark" role="img" aria-label="Food web">
         <defs>
           <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#C9AE7E" />
           </marker>
           <marker id="arrow-hi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#e2e8f0" />
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFF4D6" />
           </marker>
         </defs>
         {edges.map((e) => {
@@ -86,7 +86,7 @@ export default function FoodWebDiagram({ config }: { config: GameConfig }) {
               y1={a.y}
               x2={b.x}
               y2={b.y}
-              stroke={hi ? "#e2e8f0" : "#94a3b8"}
+              stroke={hi ? "#FFF4D6" : "#C9AE7E"}
               strokeWidth={hi ? 2.5 : 1.5}
               opacity={dim ? 0.2 : 1}
               markerEnd={hi ? "url(#arrow-hi)" : "url(#arrow)"}
@@ -109,15 +109,15 @@ export default function FoodWebDiagram({ config }: { config: GameConfig }) {
               aria-pressed={isSel}
               aria-label={`${n.label}, ${CLASS_LABEL[n.kind]}`}
             >
-              <circle r={isSel ? 22 : 18} fill={CLASS_COLOUR[n.kind]} stroke={isSel ? "#fff" : "#0f172a"} strokeWidth={2} />
-              <text y={36} textAnchor="middle" fontSize={11} fill="#e2e8f0">
+              <circle r={isSel ? 22 : 18} fill={CLASS_COLOUR[n.kind]} stroke={isSel ? "#FFF4D6" : "#2B1A0E"} strokeWidth={2} />
+              <text y={36} textAnchor="middle" fontSize={11} fill="#FFF4D6">
                 {n.label}
               </text>
             </g>
           );
         })}
       </svg>
-      <ul className="flex flex-wrap gap-3 text-xs text-slate-300">
+      <ul className="flex flex-wrap gap-3 text-xs text-cream-soft">
         {(Object.keys(CLASS_COLOUR) as (SpeciesClass | "tree")[]).map((k) => (
           <li key={k} className="flex items-center gap-1">
             <span className="inline-block h-3 w-3 rounded-full" style={{ background: CLASS_COLOUR[k] }} />
@@ -125,7 +125,7 @@ export default function FoodWebDiagram({ config }: { config: GameConfig }) {
           </li>
         ))}
       </ul>
-      <p className="text-sm text-slate-300">
+      <p className="text-sm text-cream-soft">
         {selected
           ? `${nodes.find((n) => n.id === selected)?.label}: ${[...neighbours]
               .filter((id) => id !== selected)

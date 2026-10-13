@@ -37,6 +37,10 @@ export interface EcosystemTestHook {
   treeSprites: () => number;
   /** Depth of the tree sprite on tile (x, y), or null when there is no tree there. */
   treeDepthAt: (x: number, y: number) => number | null;
+  /** Depth of the stump sprite on tile (x, y), or null when there is no stump there. */
+  stumpDepthAt: (x: number, y: number) => number | null;
+  /** Tile positions of the stumps on this island. */
+  stumpTiles: () => { x: number; y: number }[];
   /** Id of the animal the E key would inspect from here, or null. */
   nearestAnimalId: () => string | null;
   /** Runs the same action as pressing E at the player's position. */
@@ -76,6 +80,7 @@ export class HubScene extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private treeCount = 0;
   private treeSprites = new Map<string, Phaser.GameObjects.Image>();
+  private stumpSprites = new Map<string, Phaser.GameObjects.Image>();
 
   constructor() {
     super("island");
@@ -85,6 +90,7 @@ export class HubScene extends Phaser.Scene {
     this.islandId = data?.islandId ?? HUB_ID;
     this.animalSprites = new Map();
     this.treeSprites = new Map();
+    this.stumpSprites = new Map();
     this.treeCount = 0;
     this.accumulatorMs = 0;
   }
@@ -96,8 +102,9 @@ export class HubScene extends Phaser.Scene {
     this.load.json("missions", "/data/missions.json");
     for (const id of ISLAND_MAP_IDS) this.load.tilemapTiledJSON(`map-${id}`, `/maps/${id}.json`);
     this.load.image("atlas", "/assets/tilesets/atlas.png");
-    // Same image as a frame sheet, so tree tiles can be drawn as sprites and depth-sorted.
-    this.load.spritesheet("atlasFrames", "/assets/tilesets/atlas.png", { frameWidth: TILE, frameHeight: TILE });
+    // Trees are 16 x 32 (canopy above the trunk tile) and stumps 16 x 16. See tools/make_tree_sprites.py.
+    this.load.image("tree", "/assets/vegetation/tree-16x32.png");
+    this.load.image("stump", "/assets/vegetation/stump-16x16.png");
     this.load.spritesheet("creatures", "/assets/animals/creatures.png", {
       frameWidth: 16,
       frameHeight: 16,
@@ -134,6 +141,7 @@ export class HubScene extends Phaser.Scene {
     this.solid.setVisible(false);
 
     this.addTrees();
+    if (this.mission?.id === "mission-forest") this.addStumps();
     this.addLabLabel();
 
     if (cached) {
@@ -147,6 +155,16 @@ export class HubScene extends Phaser.Scene {
         settings: missionDefaults(this.mission),
         seed: SIM_SEED,
         baseGrassPercent: this.mission.start.grassPercent,
+      });
+    } else if (liveSimulation.hubBase) {
+      // The hub's base was replaced by an experiment the player made the new base (confirmed in the lab).
+      this.sim = buildRun({
+        config: this.config,
+        world: this.world,
+        env,
+        settings: liveSimulation.hubBase,
+        seed: SIM_SEED,
+        baseGrassPercent: HUB_GRASS_START,
       });
     } else {
       const startingPopulation = Object.fromEntries(
@@ -196,7 +214,7 @@ export class HubScene extends Phaser.Scene {
 
     // The prompt is screen-fixed and only shows what E would do here.
     this.prompt = this.add
-      .text(0, 0, "", textStyle("#fff3c4"))
+      .text(0, 0, "", textStyle("#FFF4D6"))
       .setDepth(10000)
       .setScrollFactor(0)
       .setVisible(false)
@@ -214,6 +232,8 @@ export class HubScene extends Phaser.Scene {
       hour: () => this.sim.currentHour,
       treeSprites: () => this.treeCount,
       treeDepthAt: (x, y) => this.treeSprites.get(`${x},${y}`)?.depth ?? null,
+      stumpDepthAt: (x, y) => this.stumpSprites.get(`${x},${y}`)?.depth ?? null,
+      stumpTiles: () => [...this.stumpSprites.keys()].map((k) => k.split(",").map(Number)).map(([x, y]) => ({ x, y })),
       nearestAnimalId: () => this.nearestAnimal(1.5)?.id ?? null,
       interactNearest: () => this.interact(),
       inspectAnimal: () => this.inspectFirstAnimal(),
@@ -234,7 +254,10 @@ export class HubScene extends Phaser.Scene {
     };
   }
 
-  /** Draws each tree tile as a sprite whose depth is its base, so the player walks behind and in front of it. */
+  /**
+   * Draws each tree as a 16 x 32 sprite standing on its trunk tile. The sprite's base is its depth,
+   * so the player walks behind the canopy when north of the tree and in front of it when south.
+   */
   private addTrees(): void {
     const raw = this.cache.tilemap.get(this.mapKey).data as {
       width: number;
@@ -247,10 +270,34 @@ export class HubScene extends Phaser.Scene {
       const tx = i % raw.width;
       const ty = Math.floor(i / raw.width);
       const tree = this.add
-        .image((tx + 0.5) * TILE, (ty + 0.5) * TILE, "atlasFrames", gid - 1)
+        .image((tx + 0.5) * TILE, (ty + 1) * TILE, "tree")
+        .setOrigin(0.5, 1)
         .setDepth((ty + 1) * TILE);
       this.treeSprites.set(`${tx},${ty}`, tree);
       this.treeCount++;
+    }
+  }
+
+  /**
+   * Cut stumps on the forest mission's cleared ground (plan M1.6). They are drawn with their base
+   * as depth, like trees, but they are not solid, so they change nothing in the simulation.
+   */
+  private addStumps(): void {
+    const W = this.world.width;
+    const forest = new Set(this.world.forestRegionIds);
+    let placed = 0;
+    for (let i = 0; i < W * this.world.height && placed < 12; i++) {
+      const tx = i % W;
+      const ty = Math.floor(i / W);
+      if (i % 61 !== 17) continue;
+      if (!forest.has(this.world.regionOf[i]) || this.world.blocked[i] !== 0) continue;
+      if (this.treeSprites.has(`${tx},${ty}`)) continue;
+      const stump = this.add
+        .image((tx + 0.5) * TILE, (ty + 1) * TILE, "stump")
+        .setOrigin(0.5, 1)
+        .setDepth((ty + 1) * TILE);
+      this.stumpSprites.set(`${tx},${ty}`, stump);
+      placed++;
     }
   }
 
@@ -262,7 +309,7 @@ export class HubScene extends Phaser.Scene {
     const labCentreX = (doorX + 0.5) * TILE;
     const labTopY = (station.y - 4) * TILE;
     this.add
-      .text(labCentreX, labTopY - 4, "Research lab", textStyle("#e2f3ff"))
+      .text(labCentreX, labTopY - 4, "Research lab", textStyle("#FFF4D6"))
       .setOrigin(0.5, 1)
       .setDepth(9000);
   }

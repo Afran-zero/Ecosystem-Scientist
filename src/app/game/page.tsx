@@ -10,7 +10,7 @@ import { liveSimulation } from "@/game/liveSimulation";
 
 const PhaserGame = dynamic(() => import("@/components/game/PhaserGame"), {
   ssr: false,
-  loading: () => <p className="p-4 text-sm text-slate-300">Loading the island…</p>,
+  loading: () => <p className="p-4 text-sm text-cream-soft">Loading the island…</p>,
 });
 
 /** The island (Phaser), its HUD, the lab, and the dialogs. ?island=mission-meadow opens a mission. */

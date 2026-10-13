@@ -48,7 +48,7 @@ test("lab: controls validate, runs save, the island pauses, and closing keeps ev
 
   // Experiments: run a control, then an experiment. Both are saved.
   await dialog.getByRole("tab", { name: "Experiments" }).click();
-  await dialog.getByRole("button", { name: "Run control (default settings)" }).click();
+  await dialog.getByRole("button", { name: "Run control (island base)" }).click();
   await expect(dialog.getByRole("status")).toContainText("Saved run-1", { timeout: 60_000 });
   await dialog.getByRole("button", { name: "Run experiment (my settings)" }).click();
   await expect(dialog.getByRole("status")).toContainText("Saved run-2", { timeout: 60_000 });

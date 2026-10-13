@@ -77,12 +77,12 @@ export default function FoodWebExplorer({
     <div className="eco-panel p-6 sm:p-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl text-amber-100">Food web explorer</h2>
-          <p className="mt-1 text-sm text-slate-400">
+          <h2 className="font-display text-2xl text-honey">Food web explorer</h2>
+          <p className="mt-1 text-sm text-cream-muted">
             Hover an edge to see who eats whom. Click an edge to pin its explanation.
           </p>
         </div>
-        <ul className="flex flex-wrap gap-2 text-[11px] text-slate-300">
+        <ul className="flex flex-wrap gap-2 text-[11px] text-cream-soft">
           <li className="flex items-center gap-1.5">
             <span className="inline-block h-0.5 w-5 rounded" style={{ background: EDGE_STYLE.grazes.stroke }} />
             Grazes
@@ -167,7 +167,7 @@ export default function FoodWebExplorer({
                     x={n.x}
                     y={n.y + 38}
                     textAnchor="middle"
-                    className="fill-slate-100"
+                    className="fill-cream"
                     style={{ fontSize: 12, fontWeight: 600 }}
                   >
                     {n.name}
@@ -187,27 +187,27 @@ export default function FoodWebExplorer({
           </svg>
         </div>
 
-        <aside aria-live="polite" className="rounded-lg border border-white/10 bg-slate-950/40 p-4 text-sm text-slate-200">
+        <aside aria-live="polite" className="rounded-lg border border-cream/10 bg-ink/40 p-4 text-sm text-cream">
           {focused ? (
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Edge · {focused.kind}</p>
-              <p className="font-display text-lg text-amber-100">
+              <p className="text-xs font-semibold uppercase tracking-wider text-honey">Edge · {focused.kind}</p>
+              <p className="font-display text-lg text-honey">
                 {findNode(nodes, focused.predator)?.name} {EDGE_KIND_VERB[focused.kind]} {findNode(nodes, focused.prey)?.name}
               </p>
-              <p className="text-slate-300">{EDGE_KIND_EXPLAIN[focused.kind]}</p>
-              <p className="text-xs text-slate-500">
+              <p className="text-cream-soft">{EDGE_KIND_EXPLAIN[focused.kind]}</p>
+              <p className="text-xs text-cream-muted">
                 Click another edge to change the focus. Click the same edge again to clear it.
               </p>
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">How to read this</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-honey">How to read this</p>
               <p>
                 Each line shows a feeding link. The arrow points from the food to the eater. The dashed amber line shows
                 an omnivore that takes a little bit of many things. The red line is a predator hunt.
               </p>
-              <p className="text-xs text-slate-500">Hover or click any line for an explanation.</p>
-              <ul className="mt-2 space-y-1 text-xs text-slate-400">
+              <p className="text-xs text-cream-muted">Hover or click any line for an explanation.</p>
+              <ul className="mt-2 space-y-1 text-xs text-cream-muted">
                 <li>· {edges.filter((e) => e.kind === "grazes").length} grazing links</li>
                 <li>· {edges.filter((e) => e.kind === "forages").length} foraging links</li>
                 <li>· {edges.filter((e) => e.kind === "hunts").length} hunting links</li>

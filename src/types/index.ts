@@ -117,6 +117,8 @@ export interface DayRecord {
   births: Record<string, number>;
   deaths: Record<string, number>;
   huntsSucceeded: number;
+  /** Animals of each prey species eaten by predators on this day. Always at most that species' deaths. */
+  eaten: Record<string, number>;
   grassCoveragePercent: number;
   /** Grass coverage per grass-capable region, in percent. */
   grassByRegion: Record<string, number>;

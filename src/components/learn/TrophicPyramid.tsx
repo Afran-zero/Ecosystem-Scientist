@@ -68,8 +68,8 @@ export default function TrophicPyramid({
     <div className="eco-panel p-6 sm:p-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl text-amber-100">Trophic levels</h2>
-          <p className="mt-1 text-sm text-slate-400">
+          <h2 className="font-display text-2xl text-honey">Trophic levels</h2>
+          <p className="mt-1 text-sm text-cream-muted">
             Energy flows up the pyramid. Each level holds fewer individuals than the one below it,
             because most energy is lost as heat at every step.
           </p>
@@ -123,7 +123,7 @@ export default function TrophicPyramid({
                     x={path.cx}
                     y={path.cy - 8}
                     textAnchor="middle"
-                    className="fill-slate-950"
+                    className="fill-ink"
                     style={{ fontWeight: 700, fontSize: 18, pointerEvents: "none" }}
                   >
                     {t.title}
@@ -132,7 +132,7 @@ export default function TrophicPyramid({
                     x={path.cx}
                     y={path.cy + 14}
                     textAnchor="middle"
-                    className="fill-slate-950/80"
+                    className="fill-ink/80"
                     style={{ fontSize: 13, pointerEvents: "none" }}
                   >
                     {occupants.length} species · {occupants.length === 0 ? "—" : occupants.join(", ")}
@@ -142,16 +142,16 @@ export default function TrophicPyramid({
             })}
 
             {/* Energy axis on the right */}
-            <text x={VIEW_W - 12} y={TOP_Y - 4} textAnchor="end" className="fill-amber-200/80" style={{ fontSize: 11 }}>
+            <text x={VIEW_W - 12} y={TOP_Y - 4} textAnchor="end" className="fill-honey/80" style={{ fontSize: 11 }}>
               ↑ Energy lost as heat at each step
             </text>
-            <text x={VIEW_W - 12} y={BOTTOM_Y + 28} textAnchor="end" className="fill-emerald-300/80" style={{ fontSize: 11 }}>
+            <text x={VIEW_W - 12} y={BOTTOM_Y + 28} textAnchor="end" className="fill-moss-light/80" style={{ fontSize: 11 }}>
               Energy stored in biomass →
             </text>
           </svg>
         </div>
 
-        <ul className="space-y-2 text-sm text-slate-300">
+        <ul className="space-y-2 text-sm text-cream-soft">
           {TIERS.map((t) => {
             const colors = TROPHIC_COLORS[t.level];
             const occupants = species.filter((s) => s.classification === t.level);
@@ -160,18 +160,18 @@ export default function TrophicPyramid({
               <li
                 key={t.level}
                 className={[
-                  "rounded-lg border border-white/10 p-3 transition",
-                  isActive ? "ring-2 ring-amber-300/60" : "",
-                  "hover:border-white/30",
+                  "rounded-lg border border-cream/10 p-3 transition",
+                  isActive ? "ring-2 ring-honey/60" : "",
+                  "hover:border-cream/30",
                 ].join(" ")}
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className={`text-xs font-semibold uppercase tracking-wider ${colors.text}`}>
                     {colors.label}
                   </span>
-                  <span className="text-[11px] text-slate-500">{occupants.length} species</span>
+                  <span className="text-[11px] text-cream-muted">{occupants.length} species</span>
                 </div>
-                <p className="mt-1 text-sm text-slate-200">{t.blurb}</p>
+                <p className="mt-1 text-sm text-cream">{t.blurb}</p>
                 {onSelectFilter ? (
                   <button
                     type="button"

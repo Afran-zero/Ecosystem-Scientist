@@ -41,6 +41,7 @@ const dayRecordSchema = z.object({
   births: z.record(z.string(), num),
   deaths: z.record(z.string(), num),
   huntsSucceeded: num,
+  eaten: z.record(z.string(), num),
   grassCoveragePercent: num,
   grassByRegion: z.record(z.string(), num),
   treeCount: num,
@@ -141,6 +142,8 @@ export const progressSchema = z.object({
     ),
   }),
   labSettings: settingsSchema,
+  /** The hub's base settings after an experiment was made the new base. Absent for the original base. */
+  hubBase: settingsSchema.optional(),
 });
 
 export const saveFileSchema = z.object({

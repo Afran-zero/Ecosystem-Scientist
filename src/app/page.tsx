@@ -26,7 +26,8 @@ export default function MainMenu() {
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink/40 via-ink/60 to-cream" />
         <div className="mx-auto flex max-w-5xl flex-col items-center px-6 pb-16 pt-20 text-center sm:pt-28">
-          <p className="eco-rise text-xs font-semibold uppercase tracking-[0.3em] text-moss-light/90">A pixel-art ecology game</p>
+          <div className="eco-panel-paper max-w-2xl px-6 py-5 sm:px-8">
+          <p className="eco-rise text-xs font-semibold uppercase tracking-[0.3em] text-moss-light">A pixel-art ecology game</p>
           <h1 className="eco-rise mt-4 font-display text-4xl text-honey sm:text-6xl" style={{ animationDelay: "60ms" }}>
             Ecosystem Scientist
           </h1>
@@ -34,6 +35,8 @@ export default function MainMenu() {
             Explore one island, watch the animals live their lives, and test what happens when the conditions change. Then restore three damaged
             corners of the island.
           </p>
+
+          </div>
 
           <nav className="eco-rise mt-9 flex w-full max-w-md flex-col gap-3 sm:flex-row" aria-label="Main menu" style={{ animationDelay: "180ms" }}>
             <Link href="/game" className="eco-btn-primary flex-1 py-3 text-base">
@@ -50,7 +53,7 @@ export default function MainMenu() {
         </div>
       </section>
 
-      <div className="mx-auto grid max-w-5xl gap-6 px-6 pb-20 md:grid-cols-2">
+      <div className="mx-auto grid max-w-5xl gap-6 px-4 pb-20 sm:px-6 md:grid-cols-2 xl:max-w-6xl">
         <Link
           id="about"
           href="/about"

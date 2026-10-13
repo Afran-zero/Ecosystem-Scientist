@@ -71,7 +71,7 @@ export default function AnimalDialog({
         <div className="flex flex-col items-center gap-3">
           <Sprite frame={species.sprite} scale={6} />
           <span className="eco-chip capitalize">{species.classification}</span>
-          {guide ? <span className="text-xs italic text-slate-400">{guide.latin}</span> : null}
+          {guide ? <span className="text-xs italic text-cream-muted">{guide.latin}</span> : null}
         </div>
 
         <div className="space-y-4">
@@ -82,7 +82,7 @@ export default function AnimalDialog({
             <Stat label="Age" value={animal ? `${Math.floor(animal.ageHours / 24)} days` : "–"} />
           </section>
 
-          <section className="grid gap-3 text-sm text-slate-200 sm:grid-cols-2">
+          <section className="grid gap-3 text-sm text-cream sm:grid-cols-2">
             <Field title="Eats" text={eats.length ? eats.join(", ") : "Nothing in this model. It is a food source."} />
             <Field title="Eaten by" text={eatenBy.length ? eatenBy.join(", ") : "No predator in this model."} />
             <Field title="Lifespan in this model" text={`Up to about ${lifespanText} years. Breeds from about ${breedsFromDays} days old.`} />
@@ -91,7 +91,7 @@ export default function AnimalDialog({
             {guide ? <Field title="Behaviour" text={guide.behaviour} /> : null}
           </section>
 
-          {guide ? <FactSubtitle key={species.id} facts={guide.facts} /> : <p className="text-sm text-slate-400">Loading field notes…</p>}
+          {guide ? <FactSubtitle key={species.id} facts={guide.facts} /> : <p className="text-sm text-cream-muted">Loading field notes…</p>}
         </div>
       </div>
     </Modal>
@@ -109,17 +109,17 @@ function FactSubtitle({ facts }: { facts: string[] }) {
   const [index, setIndex] = useState(() => pick(null));
 
   return (
-    <div className="rounded-lg border border-amber-300/20 bg-slate-950/60 p-4">
+    <div className="on-dark rounded-lg border border-honey/40 bg-ink/80 p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Did you know?</p>
+        <p className="on-dark-honey text-xs font-semibold uppercase tracking-wider">Did you know?</p>
         <button type="button" onClick={() => setIndex(pick(index))} className="eco-btn-ghost text-xs">
           Another fact
         </button>
       </div>
-      <p aria-live="polite" className="mt-2 min-h-[3.5rem] text-base leading-relaxed text-slate-100">
+      <p aria-live="polite" className="mt-2 min-h-[3.5rem] text-base leading-relaxed text-cream">
         {facts[index]}
       </p>
-      <p className="mt-1 text-right text-xs text-slate-500">
+      <p className="mt-1 text-right text-xs text-cream-muted">
         Fact {index + 1} of {facts.length}
       </p>
     </div>
@@ -128,9 +128,9 @@ function FactSubtitle({ facts }: { facts: string[] }) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-white/10 bg-white/5 px-3 py-2">
-      <p className="text-[11px] uppercase tracking-wider text-slate-400">{label}</p>
-      <p className="mt-0.5 text-sm font-medium text-slate-100">{value}</p>
+    <div className="rounded-md border border-cream/10 bg-cream/5 px-3 py-2">
+      <p className="text-[11px] uppercase tracking-wider text-cream-muted">{label}</p>
+      <p className="mt-0.5 text-sm font-medium text-cream">{value}</p>
     </div>
   );
 }
@@ -138,7 +138,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Field({ title, text }: { title: string; text: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wider text-emerald-300/90">{title}</p>
+      <p className="text-xs font-semibold uppercase tracking-wider text-moss-light">{title}</p>
       <p className="mt-1 leading-relaxed">{text}</p>
     </div>
   );

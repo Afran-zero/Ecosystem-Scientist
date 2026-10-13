@@ -10,6 +10,8 @@ type Hook = {
   playerDepth: () => number;
   treeDepthAt: (x: number, y: number) => number | null;
   walkable: (x: number, y: number) => boolean;
+  stumpDepthAt: (x: number, y: number) => number | null;
+  stumpTiles: () => { x: number; y: number }[];
 };
 
 for (const island of ["hub", "mission-forest"]) {
@@ -54,3 +56,31 @@ for (const island of ["hub", "mission-forest"]) {
     expect(southDepth).toBeGreaterThan(treeDepth as number);
   });
 }
+
+test("depth on mission-forest: the player passes behind and in front of a stump (M1.6)", async ({ page }) => {
+  await page.goto("/game?island=mission-forest");
+  await page.locator("canvas").first().waitFor({ timeout: 30_000 });
+  await page.waitForFunction(() => Boolean((window as unknown as { __ecosystem?: unknown }).__ecosystem));
+  await expect
+    .poll(() => page.evaluate(() => (window as unknown as { __ecosystem: Hook }).__ecosystem.island()))
+    .toBe("mission-forest");
+
+  const stump = await page.evaluate(() => (window as unknown as { __ecosystem: Hook }).__ecosystem.stumpTiles()[0]);
+  expect(stump, "the forest mission has at least one stump").toBeTruthy();
+  const { x, y } = stump;
+
+  await page.evaluate(([tx, ty]) => (window as unknown as { __ecosystem: Hook }).__ecosystem.teleportPlayer(tx, ty - 1), [x, y]);
+  await page.waitForTimeout(600);
+  const northDepth = await page.evaluate(() => (window as unknown as { __ecosystem: Hook }).__ecosystem.playerDepth());
+  const stumpDepth = await page.evaluate(([tx, ty]) => (window as unknown as { __ecosystem: Hook }).__ecosystem.stumpDepthAt(tx, ty), [x, y]);
+  await page.locator("canvas").first().screenshot({ path: resolve(process.cwd(), "assets/previews/depth-stump-north.png") });
+
+  await page.evaluate(([tx, ty]) => (window as unknown as { __ecosystem: Hook }).__ecosystem.teleportPlayer(tx, ty + 1), [x, y]);
+  await page.waitForTimeout(600);
+  const southDepth = await page.evaluate(() => (window as unknown as { __ecosystem: Hook }).__ecosystem.playerDepth());
+  await page.locator("canvas").first().screenshot({ path: resolve(process.cwd(), "assets/previews/depth-stump-south.png") });
+
+  expect(stumpDepth).not.toBeNull();
+  expect(northDepth).toBeLessThan(stumpDepth as number);
+  expect(southDepth).toBeGreaterThan(stumpDepth as number);
+});

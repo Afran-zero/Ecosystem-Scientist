@@ -15,23 +15,23 @@ export default function MissionsPage() {
   useEffect(() => store.hydrate(), [store]);
 
   return (
-    <main className="mx-auto min-h-dvh max-w-5xl px-6 py-10">
+    <main className="paper mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10 xl:max-w-6xl">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300/90">Restoration missions</p>
-          <h1 className="mt-2 font-display text-3xl text-amber-100 sm:text-4xl">Choose a damaged island</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-moss-light">Restoration missions</p>
+          <h1 className="mt-2 font-display text-3xl text-honey sm:text-4xl">Choose a damaged island</h1>
         </div>
         <Link href="/" className="eco-btn">
           Main menu
         </Link>
       </header>
 
-      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300">
+      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-cream-soft">
         Each mission starts from a damaged state you can see on the island. You can do them in any order. Inside each one, change only the controls the
         briefing allows, run the simulation, and submit your evidence. Completion is decided by the measured criteria.
       </p>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
+      <div className="eco-grid-wide mt-8">
         {missions.map((m) => {
           const progress = store.progressFor(m.id);
           const done = progress.status === "completed";
@@ -39,10 +39,10 @@ export default function MissionsPage() {
           return (
             <article key={m.id} className="eco-panel eco-rise flex flex-col p-5">
               <div className="flex items-start justify-between gap-3">
-                <h2 className="font-display text-xl text-amber-100">{m.title}</h2>
+                <h2 className="font-display text-xl text-honey">{m.title}</h2>
                 <span className={done ? "eco-chip eco-chip-good shrink-0" : "eco-chip shrink-0"}>{label}</span>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-slate-300">{m.problem}</p>
+              <p className="mt-3 text-sm leading-relaxed text-cream-soft">{m.problem}</p>
 
               <p className="eco-heading mt-5 text-xs uppercase tracking-wider">Starting state</p>
               <ul className="mt-1 flex flex-wrap gap-1.5 text-xs">
@@ -56,13 +56,13 @@ export default function MissionsPage() {
               </ul>
 
               <p className="eco-heading mt-5 text-xs uppercase tracking-wider">Goals</p>
-              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-300">
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-cream-soft">
                 {m.objectives.map((o) => (
                   <li key={o.id}>{o.text}</li>
                 ))}
               </ul>
 
-              <p className="mb-4 mt-4 text-xs text-slate-400">
+              <p className="mb-4 mt-4 text-xs text-cream-muted">
                 Run at least {m.minDurationDays} days. {progress.submissions.length} submission{progress.submissions.length === 1 ? "" : "s"} so far.
               </p>
 
@@ -73,7 +73,7 @@ export default function MissionsPage() {
           );
         })}
       </div>
-      {missions.length === 0 ? <p className="mt-8 text-sm text-slate-400">Loading the missions…</p> : null}
+      {missions.length === 0 ? <p className="mt-8 text-sm text-cream-muted">Loading the missions…</p> : null}
     </main>
   );
 }

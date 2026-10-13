@@ -1,20 +1,61 @@
 @import "tailwindcss";
 
 /*
- * Visual language: a field journal. Deep night-blue ground, parchment-amber headings, moss-green
- * for actions. Colours are tokens so the look can change in one place.
+ * Theme: a field journal in honey and walnut (docs/brain/THEME.md).
+ *
+ * Two surfaces. Dark (walnut): the island HUD, the lab, the game frame. Paper (cream): the menu,
+ * the mission list, the journal, and every dialog. Text flips with the surface: cream on walnut,
+ * ink on paper. Components keep one set of class names; the `.paper` and `.ink-zone` rules below
+ * do the flip.
  */
+
+@font-face {
+  font-family: "Jersey 10";
+  src: url("/assets/fonts/jersey-10-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixelify Sans";
+  src: url("/assets/fonts/pixelify-sans-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-ink: #2b1a0e;
+  --color-walnut-dark: #3a2514;
+  --color-walnut: #4a2f1b;
+  --color-brown: #7a4e2d;
+  --color-soil: #a0692e;
+  --color-cream: #fff4d6;
+  --color-cream-soft: #ead9b3;
+  --color-cream-muted: #c9ae7e;
+  --color-honey: #f2c14e;
+  --color-honey-hover: #f7d27a;
+  --color-golden: #e0a526;
+  --color-parchment: #f6e3b4;
+  --color-ink-text: #3b2412;
+  --color-brown-strong: #6b3f1f;
+  --color-muted: #7f5f3c;
+  --color-moss-light: #b5d88a;
+  --color-moss: #4e6b2c;
+  --color-rust-light: #f4a582;
+  --color-rust: #9a3f1e;
+  --color-taupe: #c7b1d6;
+
+  --font-display: "Jersey 10", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Pixelify Sans", "Trebuchet MS", system-ui, sans-serif;
+}
+
 :root {
   color-scheme: dark;
-  --eco-ground: #0b1622;
-  --eco-ground-2: #13293d;
-  --eco-panel: rgba(12, 24, 37, 0.94);
-  --eco-line: rgba(255, 255, 255, 0.1);
-  --eco-amber: #fde68a;
-  --eco-moss: #22c55e;
-  --eco-moss-deep: #15803d;
-  --eco-text: #e2e8f0;
-  --eco-muted: #94a3b8;
+  --eco-frame-light: #e9d3a0;
+  --eco-line-dark: rgba(255, 244, 214, 0.16);
+  --eco-line-paper: rgba(122, 78, 45, 0.28);
 }
 
 html,
@@ -24,51 +65,181 @@ body {
 }
 
 body {
-  color: var(--eco-text);
+  font-family: var(--font-body);
+  color: var(--color-cream);
   background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(34, 197, 94, 0.12), transparent 60%),
-    radial-gradient(900px 500px at 110% 10%, rgba(56, 189, 248, 0.10), transparent 60%),
-    linear-gradient(180deg, var(--eco-ground-2), var(--eco-ground) 70%);
+    radial-gradient(1200px 600px at 15% -10%, rgba(242, 193, 78, 0.10), transparent 60%),
+    linear-gradient(180deg, var(--color-walnut), var(--color-ink) 75%);
   background-attachment: fixed;
   min-height: 100%;
+  -webkit-font-smoothing: none;
+}
+
+h1,
+h2,
+h3,
+button,
+label,
+th,
+[role="tab"],
+kbd {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-size: 3.25rem;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+button,
+[role="tab"] {
+  font-size: 1.2rem;
 }
 
 .font-display {
-  font-family: Georgia, "Times New Roman", serif;
-  letter-spacing: 0.01em;
+  font-family: var(--font-display);
 }
 
+/* ---- Paper surface: cream page, ink text. Dialogs and paper pages use it. ---- */
+
+.paper,
+.ink-zone {
+  color: var(--color-ink-text);
+}
+
+.paper {
+  background: var(--color-cream);
+  min-height: 100dvh;
+}
+
+.paper .text-cream,
+.ink-zone .text-cream {
+  color: var(--color-ink-text);
+}
+.paper .text-cream-soft,
+.ink-zone .text-cream-soft {
+  color: var(--color-ink-text);
+}
+.paper .text-cream-muted,
+.ink-zone .text-cream-muted {
+  color: var(--color-muted);
+}
+.paper .text-honey,
+.paper .text-honey-hover,
+.ink-zone .text-honey,
+.ink-zone .text-honey-hover {
+  color: var(--color-brown-strong);
+}
+.paper .text-moss-light,
+.ink-zone .text-moss-light {
+  color: var(--color-moss);
+}
+.paper .text-rust-light,
+.ink-zone .text-rust-light {
+  color: var(--color-rust);
+}
+.paper .text-taupe,
+.ink-zone .text-taupe {
+  color: #5e3f73;
+}
+.paper .border-cream\/15,
+.ink-zone .border-cream\/15 {
+  border-color: var(--eco-line-paper);
+}
+.paper .bg-cream\/5,
+.ink-zone .bg-cream\/5 {
+  background-color: rgba(122, 78, 45, 0.08);
+}
+.paper .border-brown,
+.ink-zone .border-brown {
+  border-color: var(--color-brown);
+}
+
+/* A dark box inside a paper dialog (e.g. the fact subtitle). Its text stays cream. */
+.on-dark,
+.on-dark * {
+  color: var(--color-cream) !important;
+}
+.on-dark .on-dark-honey {
+  color: var(--color-honey) !important;
+}
+
+/* ---- Pixel components ---- */
+
+/* A framed panel. Dark by default; parchment inside .ink-zone or .paper. */
 .eco-panel {
-  background: var(--eco-panel);
-  border: 1px solid var(--eco-line);
-  border-radius: 14px;
-  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background: var(--color-walnut-dark);
+  color: var(--color-cream);
+  border: 4px solid var(--color-brown);
+  box-shadow: inset 0 0 0 2px var(--color-ink), 0 6px 0 var(--color-ink);
+  border-radius: 0;
+}
+
+.eco-panel-paper,
+.paper .eco-panel,
+.ink-zone .eco-panel {
+  background: var(--color-parchment);
+  color: var(--color-ink-text);
+  box-shadow: inset 0 0 0 2px var(--eco-frame-light), 0 6px 0 var(--color-brown);
 }
 
 .eco-heading {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 0.95rem;
-  color: var(--eco-amber);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-honey);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.paper .eco-heading,
+.ink-zone .eco-heading {
+  color: var(--color-brown-strong);
 }
 
 .eco-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  border: 1px solid var(--eco-line);
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 999px;
-  padding: 0.15rem 0.6rem;
-  font-size: 0.75rem;
-  color: var(--eco-text);
+  gap: 0.3rem;
+  border: 2px solid var(--color-brown);
+  background: var(--color-walnut);
+  color: var(--color-cream);
+  padding: 0.05rem 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.3;
 }
 
 .eco-chip-good {
-  border-color: rgba(74, 222, 128, 0.5);
-  background: rgba(34, 197, 94, 0.12);
-  color: #bbf7d0;
+  border-color: var(--color-moss-light);
+  background: #3d4f22;
+  color: var(--color-moss-light);
 }
 
+.paper .eco-chip,
+.ink-zone .eco-chip {
+  background: var(--color-cream);
+  color: var(--color-ink-text);
+  border-color: var(--color-brown);
+}
+.paper .eco-chip-good,
+.ink-zone .eco-chip-good {
+  background: #dfe9c4;
+  color: var(--color-moss);
+  border-color: var(--color-moss);
+}
+
+/* Buttons: honey by default, pushed in when pressed. */
 .eco-btn,
 .eco-btn-primary,
 .eco-btn-ghost {
@@ -76,62 +247,185 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  border-radius: 9px;
-  padding: 0.5rem 0.95rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 0.45rem 1rem 0.35rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--eco-text);
+  border: 3px solid var(--color-ink);
+  border-radius: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+  background: var(--color-parchment);
+  box-shadow: 0 4px 0 var(--color-ink);
+  transition: none;
 }
 
 .eco-btn:hover,
 .eco-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--color-honey-hover);
 }
 
 .eco-btn:active,
 .eco-btn-primary:active {
-  transform: translateY(1px);
+  transform: translateY(4px);
+  box-shadow: 0 0 0 var(--color-ink);
 }
 
 .eco-btn-primary {
-  border-color: rgba(134, 239, 172, 0.5);
-  background: linear-gradient(180deg, #22c55e, var(--eco-moss-deep));
-  color: #f0fdf4;
-  box-shadow: 0 6px 20px -8px rgba(34, 197, 94, 0.6);
+  background: var(--color-honey);
 }
 
 .eco-btn-primary:hover {
-  filter: brightness(1.08);
+  background: var(--color-honey-hover);
 }
 
 .eco-btn-ghost {
-  border-color: transparent;
   background: transparent;
-  color: var(--eco-muted);
+  color: var(--color-cream);
+  border-color: transparent;
+  box-shadow: none;
   padding: 0.3rem 0.5rem;
 }
 
+.eco-btn-ghost:hover {
+  background: rgba(255, 244, 214, 0.12);
+}
+
+.eco-btn:disabled,
+.eco-btn-primary:disabled {
+  opacity: 1;
+  color: var(--color-muted);
+  background: var(--color-cream);
+  border-style: dotted;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.paper .eco-btn-ghost,
+.ink-zone .eco-btn-ghost {
+  color: var(--color-ink-text);
+}
+
+.paper .eco-btn-ghost:hover,
+.ink-zone .eco-btn-ghost:hover {
+  background: rgba(122, 78, 45, 0.14);
+}
+
 .eco-link {
-  color: var(--eco-amber);
+  color: var(--color-honey);
   text-decoration: underline;
+  text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }
 
-.eco-btn:focus-visible,
-.eco-btn-primary:focus-visible,
-.eco-btn-ghost:focus-visible,
-.eco-link:focus-visible,
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--eco-amber);
-  outline-offset: 2px;
+.paper .eco-link,
+.ink-zone .eco-link {
+  color: var(--color-brown-strong);
 }
 
-/* Gentle entrance for panels and the menu. Respects reduced motion. */
+/* Focus is always visible: a dotted honey outline, offset from the control. */
+button:focus-visible,
+a:focus-visible,
+[role="tab"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px dotted var(--color-honey);
+  outline-offset: 3px;
+}
+
+.paper button:focus-visible,
+.paper a:focus-visible,
+.ink-zone button:focus-visible,
+.ink-zone a:focus-visible {
+  outline-color: var(--color-brown-strong);
+}
+
+/* Form fields: an inset brown frame, cream on paper and walnut on dark. */
+input[type="number"],
+input[type="text"],
+select,
+textarea {
+  font-family: var(--font-body);
+  border-radius: 0;
+}
+
+/* Sliders: a square honey thumb on a brown track, not the browser's round one. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  background: var(--color-brown);
+  border: 2px solid var(--color-ink);
+  border-radius: 0;
+  padding: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 18px;
+  background: var(--color-honey);
+  border: 2px solid var(--color-ink);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 16px;
+  background: var(--color-honey);
+  border: 2px solid var(--color-ink);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+input[type="range"]:disabled {
+  opacity: 0.5;
+}
+
+/* Responsive grids. Columns fill the width the container has, so a wide screen gets more columns and a
+ * phone gets one. The minimum is capped at 100% so nothing overflows a narrow screen. */
+.eco-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+}
+
+.eco-grid-wide {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+}
+
+/* Lab split: controls on the left (sticky on wide screens), charts on the right. */
+.eco-split {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1024px) {
+  .eco-split {
+    grid-template-columns: minmax(20rem, 28rem) minmax(0, 1fr);
+    align-items: start;
+  }
+  .eco-split-side {
+    position: sticky;
+    top: 0;
+  }
+}
+
+/* Small pixel rules, used in place of rounded corners. */
+.eco-rule {
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--color-brown) 0 8px, transparent 8px 12px);
+}
+
+/* Gentle entrance for panels and the menu. Steps keep the pixel feel. Respects reduced motion. */
 @keyframes eco-rise {
   from {
     opacity: 0;
@@ -144,7 +438,7 @@ button:focus-visible {
 }
 
 .eco-rise {
-  animation: eco-rise 0.5s ease both;
+  animation: eco-rise 0.4s steps(4) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

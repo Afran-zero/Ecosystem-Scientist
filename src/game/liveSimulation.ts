@@ -66,11 +66,6 @@ export interface LastResult {
 type Listener = () => void;
 type Errors = Partial<Record<ControlKey, string>>;
 
-/** Settings an island starts with: the mission's start for a mission, the hub defaults otherwise. */
-function islandDefaults(mission: MissionDef | null): ExperimentSettings {
-  return mission ? missionDefaults(mission) : defaultSettings();
-}
-
 class LiveSimulationStore {
   private islands = new Map<string, LiveWorld>();
   private active: LiveWorld | null = null;
@@ -83,6 +78,9 @@ class LiveSimulationStore {
   private hydrated = false;
   private result: LastResult | null = null;
   private journalState: Journal = EMPTY_JOURNAL;
+  private hubBaseState: ExperimentSettings | null = null;
+  /** Set when the browser could not keep every saved run. Shown in the lab. */
+  private droppedRuns = 0;
   private interventionLog: string[] = [];
   private touchVector = { x: 0, y: 0 };
   private touchInteractPending = false;
@@ -92,11 +90,17 @@ class LiveSimulationStore {
 
   // --- Islands -----------------------------------------------------------
 
+  /** The settings an island starts from: the mission's start, the hub base, or the original hub defaults. */
+  private defaultsFor(mission: MissionDef | null): ExperimentSettings {
+    if (mission) return missionDefaults(mission);
+    return this.hubBaseState ?? defaultSettings();
+  }
+
   /** Called by an island scene once its simulation exists. Settings reset when the island changes. */
   attach = (world: LiveWorld): void => {
     this.islands.set(world.islandId, world);
     if (!this.active || this.active.islandId !== world.islandId) {
-      this.settings = islandDefaults(world.mission);
+      this.settings = this.defaultsFor(world.mission);
       this.errors = {};
     }
     this.active = world;
@@ -137,8 +141,9 @@ class LiveSimulationStore {
   resetIsland = (islandId: string): void => {
     this.islands.delete(islandId);
     this.runs = this.runs.filter((r) => r.missionId !== islandId);
+    this.persist();
     if (this.active?.islandId === islandId) this.active = null;
-    this.settings = islandDefaults(this.mission);
+    this.settings = this.defaultsFor(this.mission);
     this.errors = {};
     this.bump();
     this.travel(islandId);
@@ -156,7 +161,49 @@ class LiveSimulationStore {
 
   /** The defaults the active island starts from. Reset buttons go back to these. */
   get islandDefaultSettings(): ExperimentSettings {
-    return islandDefaults(this.mission);
+    return this.defaultsFor(this.mission);
+  }
+
+  // --- Island base (experiments that become the new base) ----------------------
+
+  /** The hub's custom base, or null while the original base is in use. */
+  get hubBase(): ExperimentSettings | null {
+    return this.hubBaseState;
+  }
+
+  /** Number of saved runs dropped because the browser's storage was full. */
+  get droppedRunCount(): number {
+    return this.droppedRuns;
+  }
+
+  /**
+   * Makes these settings the hub's base. The live hub is rebuilt from them, so the caller must have
+   * confirmed it. Missions never change: their start is the defined damaged state (plan M4.9).
+   */
+  setHubBase = (settings: ExperimentSettings): void => {
+    this.hubBaseState = { ...settings };
+    this.persist();
+    this.rebuildHub();
+  };
+
+  /** Returns the hub to its original base and rebuilds it. */
+  clearHubBase = (): void => {
+    this.hubBaseState = null;
+    this.persist();
+    this.rebuildHub();
+  };
+
+  /**
+   * Rebuilds the hub in place, keeping the lab open so the player stays where they were. Unlike
+   * travel, it does not close the lab or a dialog.
+   */
+  private rebuildHub(): void {
+    this.islands.delete(HUB_ID);
+    this.active = null;
+    this.settings = this.defaultsFor(null);
+    this.errors = {};
+    this.bump();
+    this.travelHandler?.(HUB_ID);
   }
 
   /**
@@ -179,7 +226,7 @@ class LiveSimulationStore {
   };
 
   resetSettings = (): void => {
-    this.settings = islandDefaults(this.mission);
+    this.settings = this.defaultsFor(this.mission);
     this.errors = {};
     this.bump();
   };
@@ -194,12 +241,21 @@ class LiveSimulationStore {
 
   saveExperiment = (run: SavedRun): void => {
     this.runs = [...this.runs, run];
+    this.persist();
+    this.bump();
+  };
+
+  /** Removes one saved run from this island's list and from the browser. */
+  deleteExperiment = (id: string): void => {
+    this.runs = this.runs.filter((r) => r.id !== id);
+    this.persist();
     this.bump();
   };
 
   clearExperiments = (): void => {
     const key = this.mission?.id ?? SANDBOX;
     this.runs = this.runs.filter((r) => r.missionId !== key);
+    this.persist();
     this.bump();
   };
 
@@ -212,6 +268,8 @@ class LiveSimulationStore {
     const saved = loadProgress();
     this.progressState = saved.missions;
     this.journalState = saved.journal;
+    this.runs = saved.experiments.map((r) => ({ ...r, role: r.role, label: r.label }));
+    this.hubBaseState = saved.hubBase;
     this.bump();
   };
 
@@ -408,7 +466,14 @@ class LiveSimulationStore {
    * so an early action cannot overwrite a save that has not been read yet.
    */
   private persist(): void {
-    if (this.hydrated) saveProgress(this.progressState, this.journalState);
+    if (!this.hydrated) return;
+    const kept = saveProgress({
+      missions: this.progressState,
+      journal: this.journalState,
+      experiments: this.runs,
+      hubBase: this.hubBaseState,
+    });
+    this.droppedRuns = kept >= 0 ? this.runs.length - kept : 0;
   }
 
   private bump(): void {

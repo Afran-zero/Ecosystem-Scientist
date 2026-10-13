@@ -27,10 +27,10 @@ export type TrophicLevel = "producer" | "herbivore" | "omnivore" | "carnivore";
 
 /** Color tokens that match the About / How-to-play copy on the main menu. */
 export const TROPHIC_COLORS: Record<TrophicLevel, { text: string; ring: string; bg: string; label: string }> = {
-  producer: { text: "text-emerald-300", ring: "ring-emerald-400/40", bg: "bg-emerald-500/10", label: "Producer" },
-  herbivore: { text: "text-lime-300", ring: "ring-lime-400/40", bg: "bg-lime-500/10", label: "Herbivore" },
-  omnivore: { text: "text-amber-300", ring: "ring-amber-400/40", bg: "bg-amber-500/10", label: "Omnivore" },
-  carnivore: { text: "text-rose-300", ring: "ring-rose-400/40", bg: "bg-rose-500/10", label: "Carnivore" },
+  producer: { text: "text-moss-light", ring: "ring-moss-light/40", bg: "bg-honey-hover/10", label: "Producer" },
+  herbivore: { text: "text-moss-light", ring: "ring-moss-light/40", bg: "bg-moss-light/10", label: "Herbivore" },
+  omnivore: { text: "text-honey", ring: "ring-honey/40", bg: "bg-golden/10", label: "Omnivore" },
+  carnivore: { text: "text-rust-light", ring: "ring-rust-light/40", bg: "bg-rust/10", label: "Carnivore" },
 };
 
 /** Plain-language description for each edge kind in the food web. */

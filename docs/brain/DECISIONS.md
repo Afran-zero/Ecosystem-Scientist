@@ -227,3 +227,63 @@ Format: **Decision** — what was chosen. **Why** — the reason. **Consequence*
 - **Decision:** A run's start values are measured by restoring `startingState`, before any day ran. Trends and the restoration summary compare that start with the last day.
 - **Why:** Using the first recorded day hid real change. The meadow showed 32.7% → 32.7% grass, when the start was 31.9%.
 - **Consequence:** `explain.ts` takes the world and config as inputs. The results text stays a pure function of the record.
+
+## D-37 — Touch controls appear only on coarse pointers
+
+- **Decision:** The joystick and E button show when `(pointer: coarse)` matches. They write to the store, and the island reads them beside the keyboard input. The joystick's analogue direction takes over while it is held.
+- **Why:** Plan M1.9 asks for touch controls on mobile, and desktop should not show them.
+- **Consequence:** A touch laptop with a fine primary pointer will not show them. The keyboard still works.
+
+## D-38 — Live changes apply to the island only on a mission, and never change a score
+
+- **Decision:** The lab's Environment tab offers "Change the live island" on a mission. Only the controls the mission allows can change. The player reviews the list before it is applied. Missions are still scored on experiments, which start from fresh runs.
+- **Why:** Spec 4.2: the live world changes only through a labelled intervention that the mission allows. Spec 4.4: experiments are kept apart from the mission's original conditions, so a live change must not be a way to pass.
+- **Consequence:** A live change is visible on the island and in the log, but it does not count toward completion.
+
+## D-39 — The field journal records what the player inspects
+
+- **Decision:** A species is added the first time it is inspected with E, and the lab is added when it is first opened. Each inspection records the island, the day and the animal's state. The journal is saved with the mission progress, and it keeps the latest 200 observations.
+- **Why:** Plan M4.11: discovery is recorded on first inspection, and entries must persist.
+- **Consequence:** Nothing is written before the saved state is loaded, so an early action cannot overwrite a save.
+
+## D-40 — The live response is a preview of an experiment, with a short horizon
+
+- **Decision:** The lab's live charts (Environment and Populations tabs) run each setting with the experiment engine, seed 2026, for up to 60 days, and compare it with the island's base. They update 350 ms after the last change. Nothing is saved, and the island is not touched.
+- **Why:** The lab should show the chain responding as the player edits, without freezing the page. A 60-day run takes well under a second in the browser. The seed is fixed so that a preview and an experiment with the same settings match exactly (tested).
+- **Consequence:** Full-length runs (up to 90 days) are still on the Experiments tab and are saved.
+
+## D-41 — Livability index: four equal parts, 0 to 100
+
+- **Decision:** Livability is the mean of grass coverage, water quality, (100 minus pollution), and the share of species still present. Each is on a 0 to 100 scale.
+- **Why:** The spec asks for a livability measure, but no formula is given. A plain average of stated parts can be checked by a reader, like the ecosystem health score (D-28).
+- **Consequence:** The weights are a teaching choice, not a biological measure. They are in `src/simulation/livability.ts`.
+
+## D-42 — Predation is recorded per prey species, and a kill is also a death
+
+- **Decision:** Each day records how many animals of each prey species were eaten by predators. These are counted within that species' deaths, never separately from them.
+- **Why:** The lab should show animals eating animals. A separate count lets the charts say which prey the predators are taking.
+- **Consequence:** A test checks the predation invariant (eaten never exceeds deaths) and that prey are eaten and animals are born over 60 days.
+
+## D-43 — Experiments change the hub's base only when ticked and confirmed, and never a mission
+
+- **Decision:** On the hub, the Experiments tab has "Make this experiment the island's new base", off by default. When a run with it ticked finishes, the player confirms, and the live hub is rebuilt from that run's settings, keeping the lab open. "Return to the original base" rebuilds it from the original defaults after confirmation. Missions never change: their start is the defined damaged state (plan M4.9).
+- **Why:** The brief says experiments must not change the base map unless the player ticks the box, and the player must be able to go back to the default.
+- **Consequence:** The base is saved with the progress. Saved runs are kept when the base changes.
+
+## D-44 — Runs live in the browser's localStorage, capped at 20, oldest dropped first
+
+- **Decision:** Runs are written to this browser's save (the save service key), with mission progress and the journal. The newest 20 are kept. If the browser refuses the write (storage full), the oldest runs are dropped until it fits, and the lab says how many were not kept.
+- **Why:** The brief asks that results are stored in each user's browser. A run's starting and final snapshots make each save large, so a cap and a clear message are needed.
+- **Consequence:** A reload keeps the runs. A different browser or a cleared site data loses them. Nothing is sent to a server.
+
+## D-45 — Theme: field journal in honey and walnut, two surfaces, two pixel fonts
+
+- **Decision:** Titles, buttons, tabs and labels use Jersey 10. Body text uses Pixelify Sans. Menu, mission list and journal are cream paper with ink text. Dialogs are parchment with ink text. The island HUD, the lab and the game frame are walnut with cream text. Colours are tokens in `globals.css`.
+- **Why:** The brief asked for a yellow, cream and brown look with pixel buttons and text, matched to the fonts. Six candidate pixel fonts were rendered side by side. Jersey 10 looked sturdiest for titles and buttons, and Pixelify Sans was the most readable for paragraphs.
+- **Consequence:** Text colour is decided by the surface, through `.paper` and `.ink-zone`. A dark box inside a paper dialog must be marked `on-dark`. The contrast test fails if a token change breaks readability.
+
+## D-46 — Responsive layout: charts use the side space on wide screens, and stack on a phone
+
+- **Decision:** The lab's Environment and Populations tabs split into two columns on screens 1024 px and wider: the controls on the left (sticky while scrolling), the charts on the right. Chart and card grids fill the width available (`.eco-grid`, `.eco-grid-wide`), so a wide screen gets more columns and a phone gets one. Below 1024 px everything stacks. The controls wrap on a narrow screen, and the lab's tab bar scrolls sideways.
+- **Why:** The game is played on a PC and on a phone. Single-column layouts left most of a wide screen empty.
+- **Consequence:** `tests/e2e/responsive.spec.ts` checks, at 1440 px and 390 px, that no page or lab tab scrolls sideways, that PC charts sit beside the controls and share rows, and that phone charts stack.

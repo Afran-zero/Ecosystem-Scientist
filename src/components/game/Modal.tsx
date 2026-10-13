@@ -26,15 +26,15 @@ export default function Modal({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 p-4 backdrop-blur-sm">
       <div
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`eco-panel max-h-[92dvh] w-full overflow-y-auto ${wide ? "max-w-3xl" : "max-w-xl"}`}
+        className={`eco-panel-paper ink-zone max-h-[92dvh] w-full overflow-y-auto ${wide ? "max-w-3xl" : "max-w-xl"}`}
       >
-        <header className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-3">
-          <h2 className="font-display text-lg text-amber-100">{title}</h2>
+        <header className="flex items-center justify-between gap-4 border-b border-cream/10 px-5 py-3">
+          <h2 className="font-display text-lg text-honey">{title}</h2>
           <button type="button" onClick={onClose} className="eco-btn-ghost" aria-label="Close dialog">
             Close (Esc)
           </button>

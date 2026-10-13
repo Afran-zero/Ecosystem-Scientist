@@ -35,7 +35,7 @@ export default function MissionBriefing({ missionId, onClose }: { missionId: str
   if (!m) {
     return (
       <Modal title="Mission briefing" onClose={onClose}>
-        <p className="text-sm text-slate-300">Loading the briefing…</p>
+        <p className="text-sm text-cream-soft">Loading the briefing…</p>
       </Modal>
     );
   }
@@ -54,7 +54,7 @@ export default function MissionBriefing({ missionId, onClose }: { missionId: str
 
   return (
     <Modal title={m.title} onClose={onClose} wide>
-      <div className="space-y-5 text-sm text-slate-200">
+      <div className="space-y-5 text-sm text-cream">
         <div className="flex flex-wrap items-center gap-2">
           <span className={progress.status === "completed" ? "eco-chip eco-chip-good" : "eco-chip"}>
             {progress.status === "completed" ? "Completed" : progress.status === "in-progress" ? "In progress" : "Not started"}
@@ -75,7 +75,7 @@ export default function MissionBriefing({ missionId, onClose }: { missionId: str
         <div className="grid gap-5 md:grid-cols-2">
           <section>
             <h3 className="eco-heading">Starting state</h3>
-            <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-slate-300">
+            <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-cream-soft">
               {ENV_LABELS.map((e) => (
                 <li key={e.key}>
                   {e.label}: {m.start.env[e.key]} {e.unit}
@@ -99,13 +99,13 @@ export default function MissionBriefing({ missionId, onClose }: { missionId: str
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-xs text-slate-400">Everything else stays at the starting value.</p>
+            <p className="mt-3 text-xs text-cream-muted">Everything else stays at the starting value.</p>
           </section>
         </div>
 
         <section>
           <h3 className="eco-heading">Success criteria</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-300">
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-cream-soft">
             {m.objectives.map((o) => (
               <li key={o.id}>{o.text}</li>
             ))}

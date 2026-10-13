@@ -136,3 +136,19 @@ The species in the simulation stay exactly as the spec defines them (seven speci
 ## Lab building (2026-10-12)
 
 The research lab is a 5 × 4 tile stone building. Its tiles come from Kenney Tiny Town (CC0), copied into the atlas at row 11 (`atlas index 154 + k`): roof 48, 49, 51, 50; wall 76, 77; arched door 90. Preview: `assets/previews/lab-closeup.png`. Tile indexes for Tiny Town use 12 columns (`row * 12 + col`), with 1 px spacing.
+
+## Drawn for this project (not downloaded)
+
+| Asset | Made by | Licence | Used for |
+|---|---|---|---|
+| `public/assets/vegetation/tree-16x32.png` | `tools/make_tree_sprites.py` (Pillow, seeded) | Project asset, drawn here. Not from a third-party pack. | Trees on the hub and mission islands. The base sits on the trunk tile. |
+| `public/assets/vegetation/stump-16x16.png` | `tools/make_tree_sprites.py` | Project asset | Cut stumps on the forest mission. Not solid. |
+
+Regenerate with `python tools/make_tree_sprites.py`. The output is the same bytes on each run.
+
+## Fonts (downloaded, licence OFL 1.1)
+
+| Font | File | Source | Licence copy | Used for |
+|---|---|---|---|---|
+| Jersey 10 (Soft Type project) | `public/assets/fonts/jersey-10-latin.woff2` | Google Fonts, Latin subset | `public/assets/LICENSES/fonts-jersey-10/OFL.txt` | Titles, buttons, tabs, labels |
+| Pixelify Sans (Pixelify Sans project) | `public/assets/fonts/pixelify-sans-latin.woff2` | Google Fonts, Latin subset | `public/assets/LICENSES/fonts-pixelify-sans/OFL.txt` | Body text |

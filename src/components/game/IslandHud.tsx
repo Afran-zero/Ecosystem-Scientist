@@ -18,7 +18,7 @@ export default function IslandHud() {
 
   if (!live) {
     return (
-      <header className="flex items-center justify-between px-4 py-3 text-sm text-slate-300">
+      <header className="flex items-center justify-between px-4 py-3 text-sm text-cream-soft">
         <Link href="/" className="eco-link">
           Main menu
         </Link>
@@ -35,11 +35,11 @@ export default function IslandHud() {
   const lab = () => store.openLab();
 
   return (
-    <div className="border-b border-white/10 bg-slate-950/80 px-4 py-2.5 backdrop-blur">
+    <div className="border-b border-cream/10 bg-ink/80 px-4 py-2.5 backdrop-blur">
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
         <div className="mr-auto min-w-0">
-          <p className="font-display text-sm text-amber-100">{mission ? mission.title : "Hub island"}</p>
-          <p className="text-xs text-slate-400">
+          <p className="font-display text-sm text-honey">{mission ? mission.title : "Hub island"}</p>
+          <p className="text-xs text-cream-muted">
             Day {day}, {String(hour).padStart(2, "0")}:00 · {store.isPaused ? "paused" : "running"} · WASD move · E interact · SPACE pause · 1 2 3 speed
           </p>
         </div>
@@ -68,7 +68,7 @@ export default function IslandHud() {
                     setConfirming(false);
                     store.resetIsland(mission.id);
                   }}
-                  className="eco-btn border-rose-400/60 text-rose-200"
+                  className="eco-btn border-rust-light/60 text-rust-light"
                 >
                   Confirm reset
                 </button>
@@ -96,11 +96,11 @@ export default function IslandHud() {
             return (
               <li
                 key={o.id}
-                className={`rounded-md border px-2.5 py-1 ${ok ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-100" : "border-white/10 bg-white/5 text-slate-200"}`}
+                className={`rounded-md border px-2.5 py-1 ${ok ? "border-moss-light/50 bg-honey-hover/10 text-moss-light" : "border-cream/10 bg-cream/5 text-ink"}`}
               >
                 <span className="font-medium">{ok ? "✓ " : ""}</span>
                 {o.text}
-                <span className="ml-2 tabular-nums text-slate-400">
+                <span className="ml-2 tabular-nums text-cream-muted">
                   now {Number.isFinite(value) ? Math.round(value * 10) / 10 : "–"}
                 </span>
               </li>
